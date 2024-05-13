@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
@@ -6,7 +8,21 @@ module.exports = {
         "./resources/**/*.svelte",
     ],
     theme: {
-        extend: {},
-    },
+        colors: {
+          black: "#000000",
+          dark: "#161616",
+          color1: "#011140",
+          color2: "#ACD7F2",
+          color3: "#0B8CD5",
+          color4: "#2758DA",
+          white: "#FFFFFF",
+          red: "#BF0404",
+          green: "#02731E",
+          grayBlue: "#b2bdc4",
+          gray: colors.gray,
+
+        },
+        extend: {}
+      },
     plugins: [],
 }

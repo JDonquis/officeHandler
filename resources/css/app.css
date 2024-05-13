@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap'); */
+
+* {
+    font-family: "Figtree", sans-serif;
+    /* color: 161616; */
+  }
+
+/* // dashboard  */
+.dashboard_container {
+    height: 100vh;
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: 40px 1fr 49px;
+    transition: all 0.3s ease;
+    background: #131724;
+    /* color: #b2bdc4; */
+}
+
+.main_and_footer_container {
+    display: grid;
+    grid-template-rows: 1fr auto;
+
+    overflow: auto;
+}
+
+@media (min-width: 768px) {
+    .dashboard_container {
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .menuStatus-false {
+        grid-template-columns: 60px 1fr;
+    }
+
+    .menuStatus-false .label_link {
+        display: none !important;
+    }
+
+    .menuStatus-false .burger_icon {
+        transform: scalex(-1);
+    }
+
+    .menuStatus-false ul {
+        position: relative;
+        left: -1px;
+    }
+
+    .burger_icon {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+    }
+
+    .burger_icon:hover {
+        cursor: pointer;
+        -webkit-backdrop-filter: brightness(70%);
+        backdrop-filter: brightness(70%);
+    }
+
+    .left_nav {
+        grid-column-start: 1;
+        grid-row-start: 2;
+        grid-row-end: 2;
+    }
+
+    header {
+        grid-column: span 2;
+    }
+
+    .main_and_footer_container {
+        grid-template-rows: 1fr auto;
+    }
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+h1 {
+    font-size: 30px;
+    color: rgb(177, 214, 255);
+    font-weight: bold;
+    letter-spacing: 2px;
+}

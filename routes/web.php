@@ -15,5 +15,6 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [AppController::class, 'index']);
-Route::get('/dahsboard', [AppController::class, 'dashboard']);
+Route::get('/dashboard', [AppController::class, 'dashboard']);
+Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
 

@@ -16,4 +16,9 @@ class AppController {
     {
         return inertia('Dashboard/Index',['title' => 'Hola']);
     }
+
+    public function maquinas(): Response
+    {
+        return inertia('Dashboard/Maquinas');
+    }
 }

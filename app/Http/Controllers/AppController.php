@@ -21,4 +21,9 @@ class AppController {
     {
         return inertia('Dashboard/Maquinas');
     }
+
+    public function bitacora(): Response
+    {
+        return inertia('Dashboard/Bitacora');
+    }
 }

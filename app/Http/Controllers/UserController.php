@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\LoginService;
@@ -27,10 +28,9 @@ class UserController extends Controller
             $token = $this->loginService->generateToken($dataUser);
             $user = auth()->user();
             $permissionsArray = $this->userService->getPermissions($user->id);
-
             $permissionsWithFormat = $this->userService->formatToPermissions($permissionsArray);
 
-            return inertia::location('/dashboard');
+            return Inertia::location('/dashboard');
 
             // return inertia('Index', 
             // [
@@ -92,7 +92,7 @@ class UserController extends Controller
 
     public function username()
     {
-        return 'username';
+        return 'ci';
     }
 
     public function failLogin()

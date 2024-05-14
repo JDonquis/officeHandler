@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BitacoraController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +21,5 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/dashboard', [AppController::class, 'dashboard']);
 Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
-Route::get('/dashboard/bitacora', [AppController::class, 'bitacora']);
+Route::get('/dashboard/bitacora', [BitacoraController::class, 'index']);
 

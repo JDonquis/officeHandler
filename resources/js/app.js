@@ -7,7 +7,7 @@ createInertiaApp({
         let page = pages[`./Pages/${name}.svelte`];
         return {
             default: page.default,
-            layout: name.startsWith("dashboard/") || name.startsWith("dashboard")  ? undefined : Layout,
+            layout: name.startsWith("Dashboard/") || name.startsWith("Dashboard")  ?  Layout : undefined ,
         };
         return page;
     },
@@ -15,3 +15,4 @@ createInertiaApp({
         new App({ target: el, props });
     },
 });
+

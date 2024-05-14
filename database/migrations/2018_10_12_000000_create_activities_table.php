@@ -28,7 +28,6 @@ return new class extends Migration
             $table->foreignId('department_id');
             $table->integer('progress');
             $table->string('observation');
-            $table->string('password');
             $table->timestamps();
         });
     }

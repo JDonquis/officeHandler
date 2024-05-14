@@ -2,7 +2,7 @@
     import LeftNav from "./LeftNav.svelte";
     import Header from "./Header.svelte";
     import Footer from "./Footer.svelte";
-	import 'iconify-icon';
+	// import 'iconify-icon';
 
 </script>
 

@@ -19,7 +19,6 @@ Route::get('/', [AppController::class, 'index']);
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/dashboard', [AppController::class, 'dashboard']);
-
-// Route::get('/dahsboard', [LoginCont::class, 'dashboard']);
-
+Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
+Route::get('/dashboard/bitacora', [AppController::class, 'bitacora']);
 

@@ -19,4 +19,13 @@ class AppController
         return inertia('Dashboard/Index');
     }
 
+    public function maquinas(): Response
+    {
+        return inertia('Dashboard/Maquinas');
+    }
+
+    public function bitacora(): Response
+    {
+        return inertia('Dashboard/Bitacora');
+    }
 }

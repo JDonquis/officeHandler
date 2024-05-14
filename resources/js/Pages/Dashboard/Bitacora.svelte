@@ -143,9 +143,7 @@
             <td> {row.title}</td>
             <td>
                 <div class={`inline px-3 py-1 text-sm font-normal rounded-full dark:bg-gray-800  gap-x-2  ${row.status_id == "1" ? 'text-ligthGreen' : 'text-gray-400'} `}>
-                    
-                        {row.status_id}
-
+                    {row.status_id}
                 </div>
             </td>
             <td> {row.location_name}</td>

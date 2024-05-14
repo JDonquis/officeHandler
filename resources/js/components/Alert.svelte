@@ -1,5 +1,5 @@
 <script>
-	import { alertInfo } from '../../stores/alertStore';
+	import { alertInfo } from '../stores/alertStore';
 	const clasesByTypeAlert = {
 		success: 'bg-green',
 		info: 'bg-white',

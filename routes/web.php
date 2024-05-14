@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AppController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,5 +16,10 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [AppController::class, 'index']);
-Route::get('/dahsboard', [AppController::class, 'dashboard']);
+Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/dashboard', [AppController::class, 'dashboard']);
+
+// Route::get('/dahsboard', [LoginCont::class, 'dashboard']);
+
 

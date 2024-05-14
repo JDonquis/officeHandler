@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use Inertia\Response;
+use Illuminate\Support\Facades\Request;
 
-class AppController {
+class AppController 
+{   
+    
+
     public function index(): Response
     {
-        return inertia('Index', [
-            'title' => 'Laravel 10, Inertia.js, Svelte, Tailwind CSS',
-        ]);
+        return inertia('Index');
     }
 
     public function dashboard(): Response
     {
-        return inertia('Dashboard/Index',['title' => 'Hola']);
+        return inertia('Dashboard/Index');
     }
+
 }

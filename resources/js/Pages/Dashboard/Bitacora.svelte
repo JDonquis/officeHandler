@@ -119,7 +119,7 @@
     // ];
     
     export let data = [];
-    
+    console.log(data);
 </script>
 
 <h1>Bitácora</h1>

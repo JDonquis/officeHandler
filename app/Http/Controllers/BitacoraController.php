@@ -17,9 +17,9 @@ class BitacoraController extends Controller
 
     public function index()
     {   
-        $data = $this->userService->getActivities();
+        $activities = $this->userService->getActivities();
+        return inertia('Dashboard/Bitacora',['data' => $activities]);
         // return response()->json($activities);
-        return inertia('Dashboard/Bitacora',['data' => $data]);
     }
 
     /**

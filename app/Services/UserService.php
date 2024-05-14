@@ -132,7 +132,10 @@ class UserService
     {
         $user = auth()->user();
         $activities = Activity::where('user_id',$user->id)->with('user','location','office','division','department','area','typeActivity','status')->get();
-        return new ActivityCollection($activities);
+        $activities = new ActivityCollection($activities);
+        $activities = json_encode($activities);
+        $activities = json_decode($activities); 
+        return $activities;
     }
 
     private function transformToStringPermissions($permissions)

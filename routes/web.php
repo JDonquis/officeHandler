@@ -24,6 +24,9 @@ Route::middleware(['auth'])->group(function ()
 {
     Route::get('/dashboard', [AppController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/bitacora', [BitacoraController::class, 'index']);    
-    // Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
+    Route::post('/dashboard/bitacora', [BitacoraController::class, 'store']);    
+    Route::put('/dashboard/bitacora/{id}', [BitacoraController::class, 'update']);    
+    Route::delete('/dashboard/bitacora/{id}', [BitacoraController::class, 'destroy']);    
+    Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
 });
 

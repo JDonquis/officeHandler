@@ -11,15 +11,16 @@
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
 	on:click|self={() => dialog.close()}
+	class="dark:bg-background dark:text-gray-50"
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
 		<slot name="header" />
-		<hr />
+		<hr  class="mt-3"/>
 		<slot />
-		<hr />
+		<hr class="my-4"/>
 		<!-- svelte-ignore a11y-autofocus -->
-		<button autofocus on:click={() => dialog.close()}>close modal</button>
+		<button class="text-gray-400" autofocus on:click={() => dialog.close()}>Cerrar</button>
 	</div>
 </dialog>
 
@@ -32,6 +33,7 @@
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(0.5px);
 	}
 	dialog > div {
 		padding: 1em;

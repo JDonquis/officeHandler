@@ -34,10 +34,10 @@
 		class="  w-full text-grayBlue"
 	>
 
-        <nav class="flex justify-between items-center  w-full max-h-32 py-3 gap-3  text-sm px-3 md:px-7 ">
+        <nav class="flex justify-between items-center  w-full max-h-32 py-3 gap-3  text-sm px-3 md:px-5 ">
             <span class="flex gap-1 items-center">
 
-            <a href="/dashboard" use:inertia class="text-2xl hidden md:inline font-bold ">OfficeHandler</a>
+            <a href="/dashboard" use:inertia class="text-xl hidden md:inline font-bold ">OFFICEHANDLER</a>
             </span>
             <!-- <div class="flex bg-color2  md:min-w-72 rounded-full items-center">
                 <iconify-icon icon="cil:search" class="mx-2" />

@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                      'ci' => '1234',
                      'charge' => 'Desarrollador',
                      'type_user_id' => '1',
-                     'seacrh' => 'Juan Donquis 1234 Desarrollador Usuario Sistemas'
+                     'search' => 'Juan Donquis 1234 Desarrollador Usuario Sistemas'
                 ],
         
             ]

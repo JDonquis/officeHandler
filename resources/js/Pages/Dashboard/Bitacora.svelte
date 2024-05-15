@@ -48,7 +48,7 @@
     </thead>
 
     <tbody slot="tbody">
-        {#each data as row}
+        {#each data.data as row}
             <tr>
                 <td>{row.code}</td>
             <td>{row.title}</td>

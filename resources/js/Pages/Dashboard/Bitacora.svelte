@@ -41,7 +41,6 @@
             <th>Fecha</th>
             <th>Iniciada en</th>
             <th>Terminada en</th>
-            <th>Terminada en</th>
             <th scope="col" class="relative py-3.5 px-4">
                 <span class="sr-only">Edit</span>
             </th>
@@ -65,7 +64,6 @@
             <td>{row.progress}</td>
             <td>{row.today_date}</td>
             <td>{row.start_date}</td>
-            <td>{row.end_date === null ? 'Sin Finalizar' : row.end_date}</td>
             <td>{row.end_date === null ? 'Sin Finalizar' : row.end_date}</td>
                 <td>
                     <button

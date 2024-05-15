@@ -27,6 +27,8 @@
 /* // dashboard  */
 .dashboard_container {
     height: 100vh;
+    width: 100%;
+    overflow: hidden;
     height: 100dvh;
     display: grid;
     grid-template-rows: 40px 1fr 49px;
@@ -91,6 +93,7 @@
 
     .main_and_footer_container {
         grid-template-rows: 1fr auto;
+        padding-top: 30px;
     }
 }
 

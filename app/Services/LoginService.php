@@ -19,7 +19,9 @@ class LoginService
 	public function tryLoginOrFail($dataUser)
 	{
 		if(!Auth::attempt($dataUser))
-			throw CustomException::badLoginData();   
+		{
+			return redirect()->route('/')->withErrors(['data' => 'Datos incorrectos, intente nuevamente']);
+		}
 	}
 
 	public function generateToken($dataUser)

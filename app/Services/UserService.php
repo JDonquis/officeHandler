@@ -5,11 +5,8 @@ namespace App\Services;
 use DB;
 use App\Models\User;
 use App\Models\Activity;
-use App\Services\ApiService;
-use App\Models\HierarchyEntity;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\ActivityCollection;
 
 class UserService
 {	
@@ -128,15 +125,6 @@ class UserService
         return $format;
     }
 
-    public function getActivities()
-    {
-        $user = auth()->user();
-        $activities = Activity::where('user_id',$user->id)->with('user','location','office','division','department','area','typeActivity','status')->get();
-        $activities = new ActivityCollection($activities);
-        $activities = json_encode($activities);
-        $activities = json_decode($activities); 
-        return $activities;
-    }
 
     private function transformToStringPermissions($permissions)
     {   

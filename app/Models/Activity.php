@@ -45,6 +45,12 @@ class Activity extends Model
         return $this->belongsTo(Location::class);
     }
     
+    public function generateNewCode()
+    {
+        $code = self::orderBy('code','desc')->first();
+        
+        return $code + 1;
+    }
 
     public function office()
     {

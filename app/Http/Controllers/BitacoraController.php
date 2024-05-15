@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Services\BitacoraService;
+use App\Http\Requests\ActivityRequest;
 
 class BitacoraController extends Controller
 {
@@ -11,62 +14,45 @@ class BitacoraController extends Controller
     
     public function __construct()
     {
-        $this->userService = new UserService;
+        $this->bitacoraService = new BitacoraService;
 
     }
 
     public function index()
     {   
-        $activities = $this->userService->getActivities();
+        $activities = $this->bitacoraService->getActivities();
         return inertia('Dashboard/Bitacora',['data' => $activities]);
         // return response()->json($activities);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ActivityRequest $request)
     {
-        //
+        $this->bitacoraService->create($request->all());
+        return redirect('/dashboard/bitacora');
+        
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ActivityRequest $request, $id)
     {
-        //
+        $this->bitacoraService->update($request->all(),$id);
+        return redirect('/dashboard/bitacora');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Activity $activity)
     {
-        //
+        $activity->destroy();
+        return redirect('/dashboard/bitacora');
+
     }
 }

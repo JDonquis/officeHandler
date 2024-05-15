@@ -16,7 +16,7 @@ use App\Http\Controllers\BitacoraController;
 |
 */
 
-Route::get('/', [AppController::class, 'index']);
+Route::get('/', [AppController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/dashboard', [AppController::class, 'dashboard']);

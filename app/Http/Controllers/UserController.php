@@ -24,7 +24,9 @@ class UserController extends Controller
     {
 
             $dataUser = ['ci' => $request->ci, 'password' => $request->password];
-            $this->loginService->tryLoginOrFail($dataUser);
+            if(!$this->loginService->tryLoginOrFail($dataUser))
+    			return redirect('/')->withErrors(['data' => 'Datos incorrectos, intente nuevamente']);
+
             $token = $this->loginService->generateToken($dataUser);
             $user = auth()->user();
             $permissionsArray = $this->userService->getPermissions($user->id);

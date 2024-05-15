@@ -17,7 +17,16 @@ class UserSeeder extends Seeder
         DB::table('users')->insert
         (
             [
-                ['area_id' => 1, 'password' => Hash::make('1234'),'name' => 'Juan','last_name' => 'Donquis','ci' => '1234','charge' => 'Desarrollador','type_user_id' => '1']
+                [
+                    'area_id' => 1,
+                     'password' => Hash::make('1234'),
+                     'name' => 'Juan',
+                     'last_name' => 'Donquis',
+                     'ci' => '1234',
+                     'charge' => 'Desarrollador',
+                     'type_user_id' => '1',
+                     'seacrh' => 'Juan Donquis 1234 Desarrollador Usuario Sistemas'
+                ],
         
             ]
         );

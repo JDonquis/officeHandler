@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('charge');
             $table->string('type_user_id');
             $table->string('password');
+            $table->string('search')->nullable();
             $table->timestamps();
         });
     }

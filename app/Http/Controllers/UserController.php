@@ -57,9 +57,9 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-        
-        return response()->json(['message' => 'Session eliminada']);
+        Auth::logout();
+
+        return redirect()->route('login');
     }
 
     public function changePassword(UpdatePasswordRequest $request)

@@ -16,10 +16,16 @@ use App\Http\Controllers\BitacoraController;
 |
 */
 
-Route::get('/', [AppController::class, 'index'])->name('login');
+Route::get('/', [AppController::class, 'index'])->name('login')->middleware('web');
 Route::post('/login', [UserController::class, 'login']);
 
-Route::get('/dashboard', [AppController::class, 'dashboard']);
-Route::get('/dashboard/maquinas', [AppController::class, 'maquinas']);
-Route::get('/dashboard/bitacora', [BitacoraController::class, 'index']);
+Route::group(['prefix' => 'dashboard','namespace' => 'App\Http\Controllers', 'middleware' => ['web']], function() 
+{
+
+    Route::get('', [AppController::class, 'dashboard'])->name('home');
+    Route::get('maquinas', [AppController::class, 'maquinas']);
+    Route::get('bitacora', [BitacoraController::class, 'index']);
+
+
+});
 

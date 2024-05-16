@@ -46,7 +46,7 @@ class BitacoraController extends Controller
             $offices,
             $divisions,
             $departments,
-            $statu,
+            $status,
             $area ,
             ]
         

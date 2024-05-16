@@ -78,6 +78,7 @@ class BitacoraService
             "department_id" => $data["department_id"],
             "progress" => $data["progress"],
             "observation" => $data["observation"],
+            "area_id" => $data["area_id"]
             ]);
 
         $newActivity->load('user','location','office','division','department','area','typeActivity','status');

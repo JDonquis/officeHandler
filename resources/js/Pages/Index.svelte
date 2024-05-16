@@ -14,16 +14,15 @@
     function handleSubmit(event) {
         event.preventDefault();
         $form.clearErrors()
-        $form.post("/login", {
-            ci: this.ci,
-            password: this.password,
+        $form.post("/login",  {
+            onError: (errors) => {
+                if(errors.data) {
+                    displayAlert({type: "error", message: errors.data})
+                }
+            },
         });
     }
-    $: if ($form.errors.data) {
-        displayAlert({type: "success", message: "que rico"})
-        console.log($form.errors.data)
-    }
-    $: console.log($form);
+    
 </script>
 
 <Alert />
@@ -69,6 +68,7 @@
 
                 <input
                     type="submit"
+                    disabled={$form.processing}
                     value={$form.processing ? "Cargando..." : "ENTRAR"}
                     class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
                 />

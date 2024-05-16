@@ -2,6 +2,8 @@
     import Table from "../../components/Table.svelte";
     import Modal from "../../components/Modal.svelte";
     import Input from "../../components/Input.svelte";
+    import Alert from "../../components/Alert.svelte";
+    import { displayAlert } from "../../stores/alertStore";
     import { useForm } from "@inertiajs/svelte";
 
     let form = useForm({
@@ -23,7 +25,13 @@
     function handleSubmit(event) {
         event.preventDefault();
         $form.clearErrors()
-        $form.post("/dashboard/bitacora");
+        $form.post("/dashboard/bitacora", {
+            onError: (errors) => {
+                if(errors.data) {
+                    displayAlert({type: "error", message: errors.data})
+                }
+            },
+        });
     }
     let showModal = false;
 
@@ -37,7 +45,7 @@
     $: console.log($form);
     $: console.log({ form });
 </script>
-
+<Alert />
 <Modal bind:showModal>
     <h2 slot="header" class="text-sm text-center">CREAR ACTIVIDAD</h2>
 
@@ -136,13 +144,21 @@
             <option value="Detenida">Detenida</option>
         </Input>
         <Input
+            type="select"
+            required={true}
+            label={"Departamento"}
+            bind:value={$form.area_id}
+            error={$form.errors?.area_id}
+        >
+            <option value="1">ayyyy</option>
+        </Input>
+        <Input
             type="textarea"
             name=""
             id=""
             label={"Observación"}
             bind:value={$form.observation}
             error={$form.errors?.observation}
-            classes={'col-span-2'}
         />
     </form>
     <input

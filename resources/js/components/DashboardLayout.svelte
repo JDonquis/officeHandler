@@ -18,7 +18,6 @@
 <svelte:head>
 
 </svelte:head>
-
 <section class="bg-white min-h-screen overflow-hidden dashboard_container" class:menuStatus-false={$navStatus.isContracted}>
     <Header />
 

@@ -38,14 +38,17 @@ class BitacoraController extends Controller
 
         return inertia('Dashboard/Bitacora',
         [
-            'data' => $activities,
-            'typeActivities' => $typeActivities, 
-            'locations' => $locations, 
-            'offices' => $offices, 
-            'divisions' => $divisions, 
-            'departments' => $departments, 
-            'status' => $status,
-            'areas' => $areas,
+            'data' =>
+            [ 
+            $activities,
+            $typeActivities,
+            $locations,
+            $offices,
+            $divisions,
+            $departments,
+            $statu,
+            $area ,
+            ]
         
         ]);
     }

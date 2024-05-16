@@ -40,14 +40,14 @@ class BitacoraController extends Controller
         [
             'data' =>
             [ 
-            $activities,
-            $typeActivities,
-            $locations,
-            $offices,
-            $divisions,
-            $departments,
-            $status,
-            $areas ,
+            "activities" => $activities,
+            "type_activities" => $typeActivities,
+            "locations" => $locations,
+            "offices" => $offices,
+            "divisions" => $divisions,
+            "departments" => $departments,
+            "status" => $status,
+            "areas " => $areas ,
             ]
         
         ]);

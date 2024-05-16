@@ -22,7 +22,7 @@
     <Header />
 
     <div class=" main_and_footer_container overflow-hidden border-l dark:border-gray-700" bing:this="main_and_footer_container">
-        <main  style={mainWidth}  class={`mx-auto main_dashboard  overflow-hidden relative px-10`} >
+        <main  style={mainWidth}  class={`mx-auto main_dashboard  overflow-hidden relative px-10 duration-700`} >
             <slot />
         </main>
 

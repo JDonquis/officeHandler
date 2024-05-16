@@ -36,9 +36,6 @@
     let showModal = false;
 
     export let data = [
-        {
-            code: 3234,
-        },
     ];
 
     $: console.log(data);
@@ -79,7 +76,9 @@
             bind:value={$form.location_id}
             error={$form.errors?.location_id}
         >
-            <option value="1">ayyyy</option>
+            <!-- {#each data.locations as option}
+                <option value="1">ayyyy</option>
+            {/each} -->
         </Input>
 
         <Input
@@ -139,9 +138,9 @@
             bind:value={$form.status_id}
             error={$form.errors?.status_id}
         >
-            <option value="En desarrollo">En desarrollo</option>
-            <option value="Finalizada">Finalizada</option>
-            <option value="Detenida">Detenida</option>
+            <option value="1">En desarrollo</option>
+            <option value="2">Finalizada</option>
+            <option value="2">Detenida</option>
         </Input>
         <Input
             type="select"

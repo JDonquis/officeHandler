@@ -60,12 +60,15 @@ class BitacoraService
         $newCode = Activity::generateNewCode();
         $todayDate = Carbon::now();
 
+        $user = auth()->user();
+
+
         $newActivity = Activity::create(
             [
             "code" => $newCode,
             "status_id" => $data["status_id"],
             "title" => $data["title"],
-            "user_id" => $data["user_id"],
+            "user_id" => $user->id,
             "today_date" => $todayDate,
             "start_date" => $data["start_date"],
             "end_date" => $data["end_date"],
@@ -88,13 +91,14 @@ class BitacoraService
     public function update($data,$id)
     {
         $activity = Activity::find($id);
+        $user = auth()->user();
         
         $activity->update(
 
             [
                 "status_id" => $data["status_id"],
                 "title" => $data["title"],
-                "user_id" => $data["user_id"],
+                "user_id" => $user->id,
                 "start_date" => $data["start_date"],
                 "end_date" => $data["end_date"],
                 "location_id" => $data["location_id"],

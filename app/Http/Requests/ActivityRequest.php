@@ -27,7 +27,6 @@ class ActivityRequest extends FormRequest
             "area_id" => ['required'],
             "status_id" => ['required'],
             "title" => ['required'],
-            "user_id" => ['required'],
             "start_date" => ['required'],
             "end_date" => ['sometimes'],
             "location_id" => ['required'],

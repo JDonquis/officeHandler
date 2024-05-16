@@ -32,7 +32,7 @@ class BitacoraController extends Controller
         $locations = Location::get();
         $offices = Office::get();
         $divisions = Division::get();
-        $departments = Department::get();
+        $departments = Department::with('division')->get();
         $status = Status::get();
         $areas = Area::get();
 

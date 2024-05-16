@@ -146,7 +146,7 @@
         <Input
             type="select"
             required={true}
-            label={"Departamento"}
+            label={"Area"}
             bind:value={$form.area_id}
             error={$form.errors?.area_id}
         >

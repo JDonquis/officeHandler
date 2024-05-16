@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\BitacoraService;
 use App\Http\Requests\ActivityRequest;
-use App\Services\TypeActivitiesService;
 
 class BitacoraController extends Controller
 {
@@ -23,7 +22,6 @@ class BitacoraController extends Controller
     public function __construct()
     {
         $this->bitacoraService = new BitacoraService;
-        $this->typeActivityService = new TypeActivitiesService;
 
     }
 
@@ -37,7 +35,7 @@ class BitacoraController extends Controller
         $departments = Department::get();
         $status = Status::get();
         $areas = Area::get();
-        
+
         return inertia('Dashboard/Bitacora',
         [
             'data' => $activities,

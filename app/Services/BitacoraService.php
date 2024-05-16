@@ -78,6 +78,8 @@ class BitacoraService
             "department_id" => $data["department_id"],
             "progress" => $data["progress"],
             "observation" => $data["observation"],
+            "area_id" => $data["area_id"],
+            "type_activity_id" => $data["type_activity_id"],
             ]);
 
         $newActivity->load('user','location','office','division','department','area','typeActivity','status');
@@ -107,6 +109,8 @@ class BitacoraService
                 "department_id" => $data["department_id"],
                 "progress" => $data["progress"],
                 "observation" => $data["observation"],
+                "area_id" => $data["area_id"],
+                "type_activity_id" => $data["type_activity_id"],
             ]
         );
     

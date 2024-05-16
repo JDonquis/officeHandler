@@ -25,14 +25,14 @@ class BitacoraController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {   
-        $activities = $this->bitacoraService->getActivities();
+        $activities = $this->bitacoraService->getActivities($request);
         $typeActivities = TypeActivity::get();
         $locations = Location::get();
         $offices = Office::get();
         $divisions = Division::get();
-        $departments = Department::get();
+        $departments = Department::with('division')->get();
         $status = Status::get();
         $areas = Area::get();
 
@@ -47,7 +47,8 @@ class BitacoraController extends Controller
             "divisions" => $divisions,
             "departments" => $departments,
             "status" => $status,
-            "areas " => $areas ,
+            "areas" => $areas,
+            "filters" => $request->only(['search'])
             ]
         
         ]);

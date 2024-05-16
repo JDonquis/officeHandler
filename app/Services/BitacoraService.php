@@ -17,11 +17,18 @@ class BitacoraService
         $this->userModel = new User;
     }
 
-    public function getActivities()
+    public function getActivities($request)
     {
         $user = auth()->user();
-        $activities = Activity::where('user_id',$user->id)->with('user','location','office','division','department','area','typeActivity','status')
+        $activities = Activity::query()
+        ->when($request->input('search'), function ($query, $search) 
+        {
+            $query->where('search','like','%' . $search . '%');
+        })
+        ->where('user_id',$user->id)
+        ->with('user','location','office','division','department','area','typeActivity','status')
         ->paginate(25)
+        ->withQueryString()
         ->through(fn($user) => [
 
             "id" => $user->id,

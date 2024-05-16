@@ -15,12 +15,12 @@ class ModuleSeeder extends Seeder
     {
         DB::table('modules')->insert
         (
-
-            ['name' => 'Usuarios'],
-            ['name' => 'Home'],
-            ['name' => 'Actividades'],
-            ['name' => 'Maquinas'],
-
+            [
+                ['name' => 'Usuarios'],
+                ['name' => 'Home'],
+                ['name' => 'Actividades'],
+                ['name' => 'Maquinas'],
+            ]
 
         );
     }

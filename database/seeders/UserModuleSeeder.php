@@ -15,12 +15,12 @@ class UserModuleSeeder extends Seeder
     {
         DB::table('user_modules')->insert
         (
-
-            ['user_id' => 1, 'module_id' => 1],
-            ['user_id' => 1, 'module_id' => 2],
-            ['user_id' => 1, 'module_id' => 3],
-            ['user_id' => 1, 'module_id' => 4],
-
+            [
+                ['user_id' => 1, 'module_id' => 1],
+                ['user_id' => 1, 'module_id' => 2],
+                ['user_id' => 1, 'module_id' => 3],
+                ['user_id' => 1, 'module_id' => 4],
+            ]    
 
         );
     }

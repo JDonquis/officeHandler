@@ -14,8 +14,9 @@ class LocationSeeder extends Seeder
     public function run(): void
     {
         DB::table('locations')->insert
-        (
-            ['name' => 'Despacho Secretaría de Salud'],
+        (   [
+                ['name' => 'Despacho Secretaría de Salud'],
+            ]
         );
     }
 }

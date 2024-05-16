@@ -15,8 +15,10 @@ class TypeActivitySeeder extends Seeder
     {
         DB::table('type_activities')->insert
         (
-            ['name' => 'Asignada'],
-            ['name' => 'No Asignada']    
+            [
+                ['name' => 'Asignada'],
+                ['name' => 'No Asignada']
+            ]    
         );
     }
 }

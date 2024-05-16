@@ -13,12 +13,13 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('status')->insert(
-
-            ['name' => 'En Desarrollo'],
-            ['name' => 'Completada'],
-            ['name' => 'Detenida'],
-
+        DB::table('status')->insert
+        (
+            [
+                ['name' => 'En Desarrollo'],
+                ['name' => 'Completada'],
+                ['name' => 'Detenida'],
+            ]
         );
     }
 }

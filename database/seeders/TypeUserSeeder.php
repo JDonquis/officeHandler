@@ -14,9 +14,11 @@ class TypeUserSeeder extends Seeder
     public function run(): void
     {
         DB::table('type_users')->insert
-        (
-            ['name' => 'Usuario'],
-            ['name' => 'Administrador']    
+        (   
+            [
+                ['name' => 'Usuario'],
+                ['name' => 'Administrador']    
+            ]
         );
     }
 }

@@ -3,7 +3,7 @@
 
     // $: url = $page.route.id
     // console.log(url)
-
+    import {toggleMenu} from "../stores/navStatus.js"
     import { inertia, page } from "@inertiajs/svelte";
 
     const navPages = [
@@ -26,13 +26,18 @@
     console.log($page);
 </script>
 
-<nav class="left_nav rounded-tr-xl pt-2 text-white text-opacity-90">
+<nav class="left_nav rounded-tr-xl pt-2 text-gray-200 h-full relative">
+    <button on:click={() => toggleMenu()} class="hidden md:block d-flex mx-2 w-11/12  items-center pt-1  text-center text-2xl text-gray-300 hover:text-color2 hover:bg-gray-950">
+
+        <iconify-icon class="mb-0 pb-0" icon="majesticons:menu-expand-left-line"></iconify-icon>
+    </button>
     <ul
-        class="flex justify-around items-center h-full md:flex-col
+        class="flex justify-around items-center  md:flex-col
     md:items-start md:justify-normal md:p-2 md:gap-1 md:[&>*]:w-full"
     >
         {#each navPages as navPage}
             <li>
+                
                 <a
                     href={navPage.href}
                     use:inertia
@@ -48,6 +53,8 @@
             </li>
         {/each}
     </ul>
+        
+
 </nav>
 
 <style>

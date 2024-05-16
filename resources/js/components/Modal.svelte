@@ -20,7 +20,13 @@
 		<slot />
 		<hr class="my-4"/>
 		<!-- svelte-ignore a11y-autofocus -->
-		<button class="text-gray-400" autofocus on:click={() => dialog.close()}>Cerrar</button>
+		<div class="flex justify-between gap-12">
+			<button class="text-gray-400" autofocus on:click={() => dialog.close()}>Cerrar</button>
+
+			<slot name="btn_footer">
+	
+			</slot>
+		</div>
 	</div>
 </dialog>
 

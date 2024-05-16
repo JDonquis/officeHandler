@@ -13,11 +13,15 @@
 
     function handleSubmit(event) {
         event.preventDefault();
-
+        $form.clearErrors()
         $form.post("/login", {
             ci: this.ci,
             password: this.password,
         });
+    }
+    $: if ($form.errors.data) {
+        displayAlert({type: "success", message: "que rico"})
+        console.log($form.errors.data)
     }
     $: console.log($form);
 </script>
@@ -44,13 +48,14 @@
                         required={true}
                         label={"Cédula"}
                         bind:value={$form.ci}
+                        error={$form.errors?.ci}
                     />
-                    {#if $form.errors.ci}
+                    <!-- {#if $form.errors.ci}
 					<div class="text-white bg-opacity-30 bg-red pt-1">
 						
                         <span >{$form.errors.ci}</span>
 					</div>
-                    {/if}
+                    {/if} -->
 
                     <Input
                         type="password"

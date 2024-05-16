@@ -9,12 +9,9 @@
     let screenWidth=  window.innerWidth 
     // $: mainWidth = main.offsetWidth;
     let mainWidth = "width:100%"
-    if (screenWidth > 768) {
+    $: if (screenWidth > 768) {
         mainWidth =`width:${screenWidth - $navStatus.navWidth-2}px`
     }
-    $: console.log($navStatus.navWidth )
-    $: console.log(screenWidth )
-    $: console.log(screenWidth - $navStatus.navWidth)
     
 </script>
 

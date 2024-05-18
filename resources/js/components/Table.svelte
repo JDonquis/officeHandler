@@ -1,33 +1,35 @@
 <script>
     import { inertia } from "@inertiajs/svelte";
-    import { useForm } from "@inertiajs/svelte";
+    import { router } from "@inertiajs/svelte";
+    import {page } from "@inertiajs/svelte";
     import debounce from "lodash/debounce";
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher } from "svelte";
 
-	const dispatch = createEventDispatcher();
+    $: console.log($page.url)
+    // $: console.log($page)
+    const dispatch = createEventDispatcher();
 
+    export let filtersOptions = [];
     export let selectedRow;
     export let serverSideData = {};
+    $: console.log(filtersOptions);
+    $: console.log(serverSideData.filters);
 
-    let form = useForm({
-        search: serverSideData.searchFilter || "",
-    });
-    console.log(serverSideData.searchFilter);
+    let filterClientData = {
+        ...serverSideData.filters
+    }
+    // $: $form, handleFilters()
+    console.log(serverSideData.filters.search);
     export let searchRoute = "/dashboard/bitacora";
 
-    const handleSearch = debounce((event) => {
+
+    const handleFilters = debounce((event) => {
         console.log("activando");
-        // event.preventDefault();
-        $form.clearErrors();
-        $form.get(`${searchRoute}`, {
-            onError: (errors) => {
-                // if (errors.data) {
-                //     displayAlert({ type: "error", message: errors.data });
-                // }
-            },
-        });
+        router.get(`${$page.url}`, filterClientData);
     }, 300);
     $: console.log(selectedRow);
+   
+
 </script>
 
 <section class="w-full">
@@ -35,23 +37,29 @@
         <div
             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700"
         >
-            <button
-                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300"
-            >
-                View all
-            </button>
-
-            <button
+            <button on:click={(e) => {
+                filterClientData['status'] = ""
+                handleFilters()
+            }} 
                 class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
-            >
-                Monitored
-            </button>
+                class:bg-gray-800={filterClientData['status'] == '' || !filterClientData['status']}
 
-            <button
-                class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
             >
-                Unmonitored
+                Todos
             </button>
+            {#each Object.entries(filtersOptions) as [filterKey, filterOption]}
+                {#each filterOption as filter}
+                    <button on:click={(e) => {
+                        filterClientData[filterKey] = filter.id
+                        handleFilters()
+                    }} 
+                        class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
+                        class:bg-gray-800={filterClientData[filterKey] == filter.id}
+                    >
+                        {filter.name}
+                    </button>
+                {/each}
+            {/each}
         </div>
 
         <div class="relative flex items-center mt-4 md:mt-0">
@@ -75,23 +83,32 @@
             <input
                 type="search"
                 placeholder="Search"
-                bind:value={$form.search}
+                bind:value={filterClientData.search}
                 on:input={() => {
-                    handleSearch();
+                    handleFilters();
                 }}
                 class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             />
         </div>
         {#if selectedRow.status}
-            <div class="flex gap-5 relative  items-end ">
-                <button on:click={() => dispatch('fillFormToEdit')} class="bg-color3 bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-color3 px-4 py-1" title="Editar">
-
-                    <iconify-icon class="relative -bottom-1" icon="line-md:edit"></iconify-icon>
+            <div class="flex gap-5 relative items-end">
+                <button
+                    on:click={() => dispatch("fillFormToEdit")}
+                    class="bg-color3 bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-color3 px-4 py-1"
+                    title="Editar"
+                >
+                    <iconify-icon class="relative -bottom-1" icon="line-md:edit"
+                    ></iconify-icon>
                 </button>
-                
-                <button on:click={() => dispatch("clickDeleteIcon")} class="bg-red bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-red px-4 py-1" title="Eliminar">
-                    
-                    <iconify-icon class="relative -bottom-1" icon="material-symbols:delete-outline"
+
+                <button
+                    on:click={() => dispatch("clickDeleteIcon")}
+                    class="bg-red bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-red px-4 py-1"
+                    title="Eliminar"
+                >
+                    <iconify-icon
+                        class="relative -bottom-1"
+                        icon="material-symbols:delete-outline"
                     ></iconify-icon>
                 </button>
             </div>

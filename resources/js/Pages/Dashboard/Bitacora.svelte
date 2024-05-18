@@ -396,8 +396,9 @@
     serverSideData={{
         ...data.activities,
         data: "",
-        searchFilter: data.filters.search,
+        filters: data.filters,
     }}
+    filtersOptions={{status: data.status}}
     on:fillFormToEdit={fillFormToEdit}
     on:clickDeleteIcon={() => {
         handleDelete(selectedRow.id)
@@ -464,6 +465,7 @@
                     <div
                         class={`inline px-3 py-1 text-sm  rounded-full dark:bg-gray-800  gap-x-2 font-light tracking-wide`}
                         class:text-ligthGreen={row.status_id == "2"}
+                        class:dark:text-redLight={row.status_id == "3"}
                     >
                         {row.status_name}
                     </div>

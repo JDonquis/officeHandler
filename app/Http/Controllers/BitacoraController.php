@@ -49,7 +49,7 @@ class BitacoraController extends Controller
             "departments" => $departments,
             "status" => $status,
             "areas" => $areas,
-            "filters" => $request->only(['search']),
+            "filters" => $request->only(['search','status']),
     
             ]
         

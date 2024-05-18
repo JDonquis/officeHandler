@@ -142,6 +142,7 @@ class BitacoraService
          . $activity->department->name . ' '
          . $activity->area->name . ' '
          . $activity->typeActivity->name . ' '
+         . $activity->title . ' '
          . $activity->status->name . ' ';
 
          return $search;

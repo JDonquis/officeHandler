@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ModuleSeeder::class,
             UserModuleSeeder::class,
+            ActivitySeeder::class,
 
         ]);
         

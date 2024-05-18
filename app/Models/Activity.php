@@ -37,6 +37,7 @@ class Activity extends Model
             'department_id',
             'progress',
             'observation',
+            'search',
     ];
 
 
@@ -49,7 +50,7 @@ class Activity extends Model
     {
         $code = self::orderBy('code','desc')->first();
         
-        return $code + 1;
+        return $code->code + 1;
     }
 
     public function office()

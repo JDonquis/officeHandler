@@ -8,9 +8,9 @@
     import { element } from "svelte/internal";
     let screenWidth=  window.innerWidth 
     // $: mainWidth = main.offsetWidth;
-    let mainWidth = "width:100%"
+    let mainWidth = `width:${screenWidth}%`
     $: if (screenWidth > 768) {
-        mainWidth =`width:${screenWidth - $navStatus.navWidth-2}px`
+        mainWidth =`width:${screenWidth - $navStatus.navWidth-20}px`
     }
     
 </script>
@@ -18,15 +18,15 @@
 <svelte:head>
 
 </svelte:head>
-<section class="bg-white min-h-screen overflow-hidden dashboard_container" class:menuStatus-false={$navStatus.isContracted}>
+<section class="bg-white min-h-screen  dashboard_container" class:menuStatus-false={$navStatus.isContracted}>
     <Header />
 
-    <div class=" main_and_footer_container overflow-hidden border-l dark:border-gray-700" bing:this="main_and_footer_container">
-        <main  style={mainWidth}  class={`mx-auto main_dashboard  overflow-hidden relative px-10 duration-700`} >
+    <div class=" main_and_footer_container  border-l dark:border-gray-700" bing:this="main_and_footer_container">
+        <main  style={mainWidth}  class={`mx-auto main_dashboard   relative px-10 duration-100 pb-10`} >
             <slot />
         </main>
-
         <Footer />
+
     </div>
     <LeftNav />
 </section>

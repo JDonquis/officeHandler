@@ -10,4 +10,7 @@ export default defineConfig({
         }),
         svelte(),
     ],
+    optimizeDeps: {
+        exclude: ['js-big-decimal']
+      }
 });

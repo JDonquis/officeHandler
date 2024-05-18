@@ -35,6 +35,7 @@ class BitacoraController extends Controller
         $departments = Department::with('division')->get();
         $status = Status::get();
         $areas = Area::get();
+        $currentUrl = request()->path();
 
         return inertia('Dashboard/Bitacora',
         [
@@ -48,7 +49,8 @@ class BitacoraController extends Controller
             "departments" => $departments,
             "status" => $status,
             "areas" => $areas,
-            "filters" => $request->only(['search'])
+            "filters" => $request->only(['search']),
+    
             ]
         
         ]);

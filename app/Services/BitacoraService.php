@@ -25,6 +25,10 @@ class BitacoraService
         {
             $query->where('search','like','%' . $search . '%');
         })
+        ->when($request->input('status'), function ($query, $status)
+        {
+            $query->where('status',$status);
+        })
         ->where('user_id',$user->id)
         ->with('user','location','office','division','department','area','typeActivity','status')
         ->paginate(25)

@@ -80,8 +80,7 @@ class BitacoraController extends Controller
      */
     public function destroy($id)
     {   
-        $activity = Activity::find($id);
-        $activity->destroy();
+        Activity::destroy($id);
         return redirect('/dashboard/bitacora');
 
     }

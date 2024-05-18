@@ -22,6 +22,7 @@ class Activity extends Model
 
     protected $fillable = 
     [
+            'id',
             'code',
             'status_id',
             'area_id',
@@ -50,6 +51,9 @@ class Activity extends Model
     {
         $code = self::orderBy('code','desc')->first();
         
+        if(!isset($code->code))
+            return 1;
+
         return $code->code + 1;
     }
 

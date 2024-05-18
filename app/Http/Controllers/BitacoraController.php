@@ -78,8 +78,9 @@ class BitacoraController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Activity $activity)
-    {
+    public function destroy($id)
+    {   
+        $activity = Activity::find($id);
         $activity->destroy();
         return redirect('/dashboard/bitacora');
 

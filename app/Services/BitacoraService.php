@@ -27,7 +27,7 @@ class BitacoraService
         })
         ->when($request->input('status'), function ($query, $status)
         {
-            $query->where('status',$status);
+            $query->where('status_id',$status);
         })
         ->where('user_id',$user->id)
         ->with('user','location','office','division','department','area','typeActivity','status')

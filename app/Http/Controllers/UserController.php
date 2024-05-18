@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\LoginService;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {

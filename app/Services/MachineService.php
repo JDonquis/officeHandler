@@ -98,7 +98,8 @@ class MachineService
          . $machine->code . ' '
          . $machine->model . ' '
          . $machine->manufacturer . ' '
-         . $machine->serial_number . ' ';
+         . $machine->serial_number . ' '
+         . $machine->observation ?? null . ' ';
          
          return $search;
     }

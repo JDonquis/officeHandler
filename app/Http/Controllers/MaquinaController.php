@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use inertia;
+use App\Models\Machine;
 use Illuminate\Http\Request;
 use App\Services\MachineService;
 use App\Http\Requests\CreateMachineRequest;
@@ -50,15 +51,16 @@ class MaquinaController extends Controller
      */
     public function update(CreateMachineRequest $request, $id)
     {
-        // $this->machineService->update($request->all(), $id);
-        // return redirect('/dashboard/maquinas');
+        $this->machineService->update($request,$id);
+        return redirect('/dashboard/maquinas');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        Machine::destroy($id);
+        return redirect('/dashboard/maquinas');
     }
 }

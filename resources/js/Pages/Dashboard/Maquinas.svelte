@@ -127,6 +127,7 @@
 
             <Input
                 type="text"
+                label={"Fabricante"}
                 bind:value={$formCreate.manufacturer}
                 error={$formCreate.errors?.manufacturer}
             />

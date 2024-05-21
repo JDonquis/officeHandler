@@ -330,7 +330,7 @@
                 <td>{row.manufacturer}</td>
 
                 <td>{row.serial_number}</td>
-                <td><img src="{row.photo}" alt="" /></td>
+                <td><img src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
                 <td>{row.observation}</td>
             </tr>
         {/each}

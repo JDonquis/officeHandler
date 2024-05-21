@@ -67,34 +67,27 @@ class MachineService
 
     public function update($request,$id)
     {
-        $activity = Activity::find($id);
-        $user = auth()->user();
+        $machine = Machine::find($id);
         
-        $activity->update(
+        $machine->update(
 
             [
-                "status_id" => $data["status_id"],
-                "title" => $data["title"],
-                "user_id" => $user->id,
-                "start_date" => $data["start_date"],
-                "end_date" => $data["end_date"],
-                "location_id" => $data["location_id"],
-                "office_id" => $data["office_id"],
-                "division_id" => $data["division_id"],
-                "department_id" => $data["department_id"],
-                "progress" => $data["progress"],
-                "observation" => $data["observation"],
-                "area_id" => $data["area_id"],
-                "type_activity_id" => $data["type_activity_id"],
+
+                "code" => $request->input('code'),
+                "name" => $request->input('name'),
+                "brand" => $request->input('brand'),
+                "model" => $request->input('model'),
+                "manufacturer" => $request->input('manufacturer'),
+                "serial_number" => $request->input('serial_number'),
+                "observation" => $request->input('observation')
+
             ]
         );
     
 
-        $activity->load('user','location','office','division','department','area','typeActivity','status');
-
-        $search = $this->generateSearch($activity);
+        $search = $this->generateSearch($machine);
         
-        $activity->update(['search' => $search]);
+        $machine->update(['search' => $search]);
 
     }
 

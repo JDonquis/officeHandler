@@ -61,11 +61,11 @@ class MachineService
 
         $search = $this->generateSearch($newMachine);
 
-        $newActivity->update(['search' => $search]);
+        $newMachine->update(['search' => $search]);
 
     }
 
-    public function update($data,$id)
+    public function update($request,$id)
     {
         $activity = Activity::find($id);
         $user = auth()->user();
@@ -112,6 +112,8 @@ class MachineService
 
     private function handlePhoto($request,$machine)
     {
+
+        dd($request->file('photo'));
         $path = $request->file('photo')->store('machines','public');
 
         $machine->update(['photo' => $path]);

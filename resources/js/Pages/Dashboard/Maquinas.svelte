@@ -311,7 +311,7 @@
                 }}
                 class={`cursor-pointer hover:bg-grayBlue hover:bg-opacity-5 ${selectedRow.id == row.id ? "bg-grayBlue hover:bg-opacity-10 bg-opacity-10 brightness-110" : ""}`}
             >
-                <td>{row.cod}</td>
+                <td>{row.code}</td>
                 <td>{row.name}</td>
 
                 <td>{row.model}</td>

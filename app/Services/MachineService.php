@@ -95,7 +95,8 @@ class MachineService
     {
         $search = 
         $machine->name . ' '
-         . $machine->code . ' '
+        . $machine->code . ' '
+        . $machine->brand . ' '
          . $machine->model . ' '
          . $machine->manufacturer . ' '
          . $machine->serial_number . ' '

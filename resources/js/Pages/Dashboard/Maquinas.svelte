@@ -142,12 +142,13 @@
             />
             
 
-            <Input
+            <!-- <Input
                 type="file"
                 label={"Foto"}
                 bind:value={$formCreate.photo}
                 error={$formCreate.errors?.photo}
-            />
+            /> -->
+    <input type="file" on:input={e => $formCreate.photo = e.target.files[0]} />
             
             <Input
                 type="textarea"
@@ -188,7 +189,7 @@
     <Input
         type="text"
         required={true}
-        label={"Nombre"}
+        label={"Equipo"}
         bind:value={$formCreate.name}
         error={$formCreate.errors?.name}
     />
@@ -222,13 +223,9 @@
         error={$formCreate.errors?.serial_number}
     />
 
+    <input type="file" on:input={e => $formCreate.photo = e.target.files[0]} />
 
-    <Input
-        type="file"
-        label={"Foto"}
-        bind:value={$formCreate.photo}
-        error={$formCreate.errors?.photo}
-    />
+    
     
     <Input
         type="textarea"

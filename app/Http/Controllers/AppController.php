@@ -19,10 +19,7 @@ class AppController
         return inertia('Dashboard/Index');
     }
 
-    public function maquinas(): Response
-    {
-        return inertia('Dashboard/Maquinas');
-    }
+    
 
    
 }

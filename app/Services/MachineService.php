@@ -113,7 +113,6 @@ class MachineService
     private function handlePhoto($request,$machine)
     {
 
-        dd($request->file('photo'));
         $path = $request->file('photo')->store('machines','public');
 
         $machine->update(['photo' => $path]);

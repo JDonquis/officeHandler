@@ -9,7 +9,7 @@
     // $: console.log($page)
     const dispatch = createEventDispatcher();
 
-    export let filtersOptions = [];
+    export let filtersOptions = false;
     export let selectedRow;
     export let serverSideData = {};
     $: console.log(filtersOptions);
@@ -19,7 +19,7 @@
         ...serverSideData.filters
     }
     // $: $form, handleFilters()
-    console.log(serverSideData.filters.search);
+    // console.log(serverSideData.filters.search);
     export let searchRoute = "/dashboard/bitacora";
 
 
@@ -47,19 +47,22 @@
             >
                 Todos
             </button>
-            {#each Object.entries(filtersOptions) as [filterKey, filterOption]}
-                {#each filterOption as filter}
-                    <button on:click={(e) => {
-                        filterClientData[filterKey] = filter.id
-                        handleFilters()
-                    }} 
-                        class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
-                        class:bg-gray-800={filterClientData[filterKey] == filter.id}
-                    >
-                        {filter.name}
-                    </button>
+            {#if filtersOptions}
+
+                {#each Object.entries(filtersOptions) as [filterKey, filterOption]}
+                    {#each filterOption as filter}
+                        <button on:click={(e) => {
+                            filterClientData[filterKey] = filter.id
+                            handleFilters()
+                        }} 
+                            class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
+                            class:bg-gray-800={filterClientData[filterKey] == filter.id}
+                        >
+                            {filter.name}
+                        </button>
+                    {/each}
                 {/each}
-            {/each}
+            {/if}
         </div>
 
         <div class="relative flex items-center mt-4 md:mt-0">

@@ -1,22 +1,25 @@
 <!-- FloatingInput.svelte -->
 <script>
+
     export let value = "";
     export let label = "";
     export let required = "";
     export let placeholder = "";
     export let type = "text";
-    export let classes = ''
-
+    export let classes = "";
+    export let min = ""
+    export let max = ""
     export let error = false;
 </script>
 
 <div class={`text-left mt-5 ${classes}`}>
-    <label for={label} class="form__label" {placeholder}>{label}</label>
+    <label for={label} class="form__label" {placeholder}>{label} {required ? "*" : ""}</label>
     <div class="relative w-full parent_div">
         {#if type === "textarea"}
             <textarea bind:value id={label} rows="1"></textarea>
         {:else if type === "select"}
-            <select id={label} bind:value>
+            <select id={label} bind:value 
+            >
                 <slot></slot>
             </select>
         {:else}
@@ -26,6 +29,9 @@
                 id={label}
                 class="form__field"
                 {required}
+                min={min}
+                max={max}
+                placeholder={placeholder}
             />
         {/if}
         {#if error}

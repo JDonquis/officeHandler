@@ -6,7 +6,7 @@
     import { displayAlert } from "../../stores/alertStore";
     import { useForm } from "@inertiajs/svelte";
 
-    let formCreate = useForm({
+    let emptyDataForm = {
         type_activity_id: "",
         area_id: "",
         status_id: "",
@@ -20,34 +20,21 @@
         department_id: "",
         progress: "",
         observation: "",
+    }
+
+    let formCreate = useForm({
+       ...emptyDataForm
     });
 
     let formEdit = useForm({
-        type_activity_id: "",
-        area_id: "",
-        status_id: "",
-        title: "",
-        user_id: "",
-        start_date: "",
-        end_date: "",
-        location_id: "",
-        office_id: "",
-        division_id: "",
-        department_id: "",
-        progress: "",
-        observation: "",
+       ...emptyDataForm
     });
 
     $: showModal = false;
     $: showModalFormEdit = false
     $: selectedRow = { status: false, id: 0 };
 
-    $: if ($formCreate.status_id == 2 || $formEdit.status_id == 2) verifyStatus()
-    function verifyStatus() {
-       
-       $formCreate.progress = 100
-       $formEdit.progress = 100
-    }
+
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -188,42 +175,30 @@
             bind:value={$formCreate.start_date}
             error={$formCreate.errors?.start_date}
         />
-        
+        <Input
+            type="date"
+            label={"Fecha de finalización"}
+            bind:value={$formCreate.end_date}
+            error={$formCreate.errors?.end_date}
+        />
 
-        
+        <Input
+            type="number"
+            label={"Progreso"}
+            bind:value={$formCreate.progress}
+            error={$formCreate.errors?.progress}
+        />
         <Input
             type="select"
             required={true}
             label={"Estado"}
             bind:value={$formCreate.status_id}
-           
             error={$formCreate.errors?.status_id}
         >
             {#each data.status as option}
                 <option value={option.id}>{option.name}</option>
             {/each}
         </Input>
-
-        {#if $formCreate.status_id == 2} 
-            <Input
-                type="date"
-                label={"Fecha de finalización"}
-                bind:value={$formCreate.end_date}
-                error={$formCreate.errors?.end_date}
-            />
-        {/if}
-        <Input
-            type="number"
-            label={"Progreso"}
-            min=0
-            max={100}
-            bind:value={$formCreate.progress}
-            error={$formCreate.errors?.progress}
-            placeholder="0-100"
-            on:cambiar={() => {
-                $formCreate.progress = 100
-            }}
-        />
         <Input
             type="select"
             required={true}
@@ -352,9 +327,6 @@
         <Input
             type="number"
             label={"Progreso"}
-            min=0
-            max={100}
-            placeholder="0-100"
             bind:value={$formEdit.progress}
             error={$formEdit.errors?.progress}
         />
@@ -418,7 +390,6 @@
         data: "",
         filters: data.filters,
     }}
-    filtersOptions={{status: data.status}}
     on:fillFormToEdit={fillFormToEdit}
     on:clickDeleteIcon={() => {
         handleDelete(selectedRow.id)
@@ -428,14 +399,13 @@
     <thead slot="thead" class="sticky top-0 z-50">
         <tr>
             <th>Cod</th>
-            <th>Actividad</th>
-            <th>Estado</th>
-            <th>Ubicación SSF</th>
-            <th>Dirección/Oficina </th>
-            <th>Progreso</th>
-            <th>Fecha</th>
-            <th>Iniciada en</th>
-            <th>Terminada en</th>
+            <th>Maquina</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Fabricante</th>
+            <th>Cód_Serie</th>
+            <th>Foto</th>
+            <th>Observación</th>
         </tr>
     </thead>
     <tbody slot="tbody">
@@ -460,19 +430,7 @@
 
                         };
                         $formEdit.defaults({
-                            type_activity_id: "",
-                            area_id: "",
-                            status_id: "",
-                            title: "",
-                            user_id: "",
-                            start_date: "",
-                            end_date: "",
-                            location_id: "",
-                            office_id: "",
-                            division_id: "",
-                            department_id: "",
-                            progress: "",
-                            observation: "",
+                            ...emptyDataForm
                         });
                     }
                 }}

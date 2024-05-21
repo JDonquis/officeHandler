@@ -16,7 +16,7 @@ class MaquinaController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {   
         $machines = $this->machineService->getMachines($request);
 

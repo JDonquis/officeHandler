@@ -53,6 +53,7 @@
     .dashboard_container {
         grid-template-columns: 240px 1fr;
         grid-template-rows: auto 1fr;
+        /* color: #ff6464; */
     }
 
     .menuStatus-false {

@@ -1,7 +1,9 @@
 <script>
 	// import { authHandlers } from "../../stores/authStore";
-    import { inertia } from '@inertiajs/svelte'
+    import { inertia, page } from '@inertiajs/svelte'
 
+    console.log($page.props.auth)
+    console.log($page)
     $: userNav = false
 
     function toggleNavUser() {
@@ -58,10 +60,12 @@
             >
                 <div class="hidden md:block" on:click={toggleNavUser}>
                     <b>
-                        <iconify-icon icon="solar:alt-arrow-down-broken" class="text-xl relative top-1" /> Juan Francisco
-                        Villasmil</b
+                        <iconify-icon icon="solar:alt-arrow-down-broken" class="text-xl relative top-1" /> 
+                        {$page.props.auth.name}
+                        {$page.props.auth.last_name}
+                        </b
                     >
-                    <p>juanvillans@gmail.com</p>
+                    <!-- <p>juanvillans@gmail.com</p> -->
                 </div>
                 <div
                     class="h-10 aspect-square rounded-full bg-green1 z-20 flex justify-center items-center text-green3"
@@ -71,8 +75,8 @@
                 </div>
                 {#if userNav}
 
-                    <div class="absolute rounded-md bg-color4 w-full z-50 px-3 top-14 rounded-tr-none max-h-min ">
-                        aaaaaaa
+                    <div class="absolute rounded-md flex items-center flex-col bg-color4 w-full z-50 px-3 top-10 -left-10 rounded-tr-none  min-h-[50px] text-gray-100 ">
+                        <a href="/logout" class="p-2 cursor-pointer hover:underline hover:text-gray-50 inline-block" >Cerrar sesión</a>
                         <!-- <button on:click={authHandlers.logout} class="p-4 flex items-center text-rigth w-full justify-end hover:text-green4 gap-2 hover:font-bold hover:underline" >Cerrar sesión <iconify-icon icon="solar:logout-line-duotone" class="text-xl"></iconify-icon></button> -->
                     </div>
                 {/if}

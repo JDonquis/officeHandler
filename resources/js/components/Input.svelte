@@ -28,7 +28,7 @@
                 {...{ type }}
                 id={label}
                 class="form__field"
-                {required}
+                required= {required}
                 min={min}
                 max={max}
                 placeholder={placeholder}

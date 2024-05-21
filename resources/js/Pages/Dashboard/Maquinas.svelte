@@ -72,12 +72,12 @@
         $formCreate.delete(`/dashboard/maquinas/${id}`, {
             onBefore: () =>
                 confirm(
-                    `¿Está seguro de eliminar la actividad ${selectedRow.title}?`,
+                    `¿Está seguro de eliminar la actividad ${selectedRow.name} ${selectedRow.model}?`,
                 ),
         });
     }
     export let data = [];
-
+    console.log(data);
     function fillFormToEdit() {
         $formEdit.reset();
         showModalFormEdit = true;
@@ -106,18 +106,17 @@
             <Input
                 type="text"
                 required={true}
-                label={"Nombre"}
+                label={"Equipo"}
                 bind:value={$formCreate.name}
                 error={$formCreate.errors?.name}
             />
             <Input
                 type="text"
-                required={true}
                 label={"Marca"}
                 bind:value={$formCreate.brand}
                 error={$formCreate.errors?.brand}
             />
-            
+
             <Input
                 type="text"
                 required={true}
@@ -125,11 +124,9 @@
                 bind:value={$formCreate.model}
                 error={$formCreate.errors?.model}
             />
-            
+
             <Input
                 type="text"
-                required={true}
-                label={"Fabricante"}
                 bind:value={$formCreate.manufacturer}
                 error={$formCreate.errors?.manufacturer}
             />
@@ -140,7 +137,6 @@
                 bind:value={$formCreate.serial_number}
                 error={$formCreate.errors?.serial_number}
             />
-            
 
             <!-- <Input
                 type="file"
@@ -148,16 +144,24 @@
                 bind:value={$formCreate.photo}
                 error={$formCreate.errors?.photo}
             /> -->
-    <input type="file" on:input={e => $formCreate.photo = e.target.files[0]} />
-            
+
             <Input
                 type="textarea"
                 name=""
                 id=""
                 label={"Observación"}
                 bind:value={$formCreate.observation}
+                classes={"col-span-2"}
                 error={$formCreate.errors?.observation}
             />
+            <label class="mt-3">
+                Foto:
+
+                <input
+                    type="file"
+                    on:input={(e) => ($formCreate.photo = e.target.files[0])}
+                />
+            </label>
         </form>
         <input
             form="a-form"
@@ -179,62 +183,72 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
-        <Input
-        type="text"
-        required={true}
-        label={"Código"}
-        bind:value={$formCreate.code}
-        error={$formCreate.errors?.code}
-    />
-    <Input
-        type="text"
-        required={true}
-        label={"Equipo"}
-        bind:value={$formCreate.name}
-        error={$formCreate.errors?.name}
-    />
-    <Input
-        type="text"
-        required={true}
-        label={"Marca"}
-        bind:value={$formCreate.brand}
-        error={$formCreate.errors?.brand}
-    />
-    <Input
-        type="text"
-        required={true}
-        label={"Modelo"}
-        bind:value={$formCreate.model}
-        error={$formCreate.errors?.model}
-    />
+            <Input
+                type="text"
+                required={true}
+                label={"Código"}
+                bind:value={$formEdit.code}
+                error={$formEdit.errors?.code}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Equipo"}
+                bind:value={$formEdit.name}
+                error={$formEdit.errors?.name}
+            />
+            <Input
+                type="text"
+                label={"Marca"}
+                bind:value={$formEdit.brand}
+                error={$formEdit.errors?.brand}
+            />
 
-    <Input
-        type="text"
-        required={true}
-        label={"Fabricante"}
-        bind:value={$formCreate.manufacturer}
-        error={$formCreate.errors?.manufacturer}
-    />
-    <Input
-        type="text"
-        required={true}
-        label={"Código de serie"}
-        bind:value={$formCreate.serial_number}
-        error={$formCreate.errors?.serial_number}
-    />
+            <Input
+                type="text"
+                label={"Modelo"}
+                bind:value={$formEdit.model}
+                error={$formEdit.errors?.model}
+            />
 
-    <input type="file" on:input={e => $formCreate.photo = e.target.files[0]} />
+            <Input
+                type="text"
+                label={"Fabricante"}
+                bind:value={$formEdit.manufacturer}
+                error={$formEdit.errors?.manufacturer}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Código de serie"}
+                bind:value={$formEdit.serial_number}
+                error={$formEdit.errors?.serial_number}
+            />
 
-    
-    
-    <Input
-        type="textarea"
-        name=""
-        id=""
-        label={"Observación"}
-        bind:value={$formCreate.observation}
-        error={$formCreate.errors?.observation}
-    />
+            <!-- <Input
+        type="file"
+        label={"Foto"}
+        bind:value={$formEdit.photo}
+        error={$formEdit.errors?.photo}
+    /> -->
+
+            <Input
+                type="textarea"
+                name=""
+                id=""
+                label={"Observación"}
+                bind:value={$formEdit.observation}
+                classes={"col-span-2"}
+                error={$formEdit.errors?.observation}
+            />
+            <label class="mt-3">
+                Foto:
+
+                <input
+                    type="file"
+                    on:input={(e) => ($formEdit.photo = e.target.files[0])}
+                />
+            </label>
         </form>
         <input
             form="a-form"
@@ -310,12 +324,13 @@
             >
                 <td>{row.code}</td>
                 <td>{row.name}</td>
+                <td>{row.brand}</td>
 
                 <td>{row.model}</td>
-                <td>{row.manufacter}</td>
+                <td>{row.manufacturer}</td>
 
                 <td>{row.serial_number}</td>
-                <td>{row.photo}</td>
+                <td><img src="{row.photo}" alt="" /></td>
                 <td>{row.observation}</td>
             </tr>
         {/each}

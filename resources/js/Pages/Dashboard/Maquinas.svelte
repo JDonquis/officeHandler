@@ -70,10 +70,13 @@
     }
     function handleDelete(id) {
         $formCreate.delete(`/dashboard/maquinas/${id}`, {
-            onBefore: () =>
+            onBefore: () => {
                 confirm(
-                    `¿Está seguro de eliminar la actividad ${selectedRow.name} ${selectedRow.model}?`,
+                    `¿Está seguro de eliminar la maquina ${selectedRow.name} ${selectedRow.model}?`,
                 ),
+                selectedRow = { status: false, id: 0 }
+
+            }
         });
     }
     export let data = [];
@@ -88,7 +91,7 @@
 
 {#if showModal}
     <Modal bind:showModal>
-        <h2 slot="header" class="text-sm text-center">CREAR ACTIVIDAD</h2>
+        <h2 slot="header" class="text-sm text-center">CREAR MAQUINA</h2>
 
         <form
             id="a-form"
@@ -168,6 +171,7 @@
             form="a-form"
             slot="btn_footer"
             type="submit"
+            disabled={$formCreate.processing}
             value={$formCreate.processing ? "Cargando..." : "Guardar"}
             class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
         />
@@ -176,7 +180,7 @@
 
 {#if showModalFormEdit}
     <Modal bind:showModal={showModalFormEdit}>
-        <h2 slot="header" class="text-sm text-center">EDITAR ACTIVIDAD</h2>
+        <h2 slot="header" class="text-sm text-center">EDITAR MAQUINA</h2>
 
         <form
             id="a-form"
@@ -255,6 +259,7 @@
             form="a-form"
             slot="btn_footer"
             type="submit"
+            disabled={$formEdit.processing}
             value={$formEdit.processing ? "Cargando..." : "Editar"}
             class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
         />
@@ -262,13 +267,13 @@
 {/if}
 
 <div class="flex justify-between">
-    <h1>Bitácora</h1>
+    <h1>Maquinas</h1>
 
     <button
         class="btn_create"
         on:click={() => {
             showModal = true;
-        }}>Nueva actividad</button
+        }}>Nueva maquina</button
     >
 </div>
 
@@ -304,8 +309,7 @@
                     if (row.id != selectedRow.id) {
                         selectedRow = {
                             status: true,
-                            id: row.id,
-                            title: row.title,
+                            ...row
                         };
                         $formEdit.defaults({
                             ...row,

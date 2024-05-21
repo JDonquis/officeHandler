@@ -85,7 +85,7 @@
 
             <input
                 type="search"
-                placeholder="Search"
+                placeholder="Buscar"
                 bind:value={filterClientData.search}
                 on:input={() => {
                     handleFilters();
@@ -143,9 +143,11 @@
 
     <div class="mt-2 sm:flex sm:items-center sm:justify-between">
         <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100"
-                >{serverSideData.current_page} of {serverSideData.last_page}</span
+            Página <span class="font-medium text-gray-700 dark:text-gray-100"
+                >{serverSideData.current_page} de {serverSideData.last_page}</span
             >
+            |
+            <span class="text-gray-500">Desde {serverSideData.from} hasta {serverSideData.to} de {serverSideData.total}</span>
         </div>
 
         <div class="flex items-center mt-4 gap-x-4 sm:mt-0">

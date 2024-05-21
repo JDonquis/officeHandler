@@ -86,7 +86,10 @@
     }
     function handleDelete(id) {
         $formCreate.delete(`/dashboard/bitacora/${id}`, {
-            onBefore: () => confirm(`¿Está seguro de eliminar la actividad ${selectedRow.title}?`)
+            onBefore: () => {
+                confirm(`¿Está seguro de eliminar la actividad ${selectedRow.title}?`)
+                selectedRow = { status: false, id: 0 }
+        }
         })
     }
     export let data = [];
@@ -248,6 +251,8 @@
         form="a-form"
         slot="btn_footer"
         type="submit"
+        disabled={$formCreate.processing}
+
         value={$formCreate.processing ? "Cargando..." : "Guardar"}
         class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
     />
@@ -393,6 +398,7 @@
         form="a-form"
         slot="btn_footer"
         type="submit"
+        disabled={$formEdit.processing}
         value={$formEdit.processing ? "Cargando..." : "Editar"}
         class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
     />

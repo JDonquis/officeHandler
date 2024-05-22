@@ -8,13 +8,14 @@
 
     let emptyDataForm = {
         machine_id: "",
-        date: "",
-        time: "",
         type_service_id: "",
-        description: "",
         user_id: "",
+        start: "",
+        description: "",
         status: "",
-        observation: "",
+        duration: "",
+        end: "",
+        next_service_date: "",
     };
 
     let formCreate = useForm({
@@ -283,14 +284,15 @@
 >
     <thead slot="thead" class="sticky top-0 z-50">
         <tr>
-            <th>Cod</th>
             <th>Maquina</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Fabricante</th>
-            <th>Cód_Serie</th>
-            <th>Foto</th>
-            <th>Observación</th>
+            <th>Tipo de mantenimiento</th>
+            <th>Estado</th>
+            <th>Responsble</th>
+            <th>Fecha de inicio</th>
+            <th>Descripción</th>
+            <th>Duración (hr)</th>
+            <th>Fecha final</th>
+            <th>Prox Mantenimiento</th>
         </tr>
     </thead>
     <tbody slot="tbody">

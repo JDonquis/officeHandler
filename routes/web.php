@@ -6,6 +6,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaquinaController;
 use App\Http\Controllers\BitacoraController;
+use App\Http\Controllers\MantenimientoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,5 +35,10 @@ Route::middleware(['auth'])->group(function ()
     Route::post('/dashboard/maquinas', [MaquinaController::class, 'store']);
     Route::put('/dashboard/maquinas/{id}', [MaquinaController::class, 'update']);
     Route::delete('/dashboard/maquinas/{id}', [MaquinaController::class, 'destroy']);
+
+    Route::get('/dashboard/mantenimiento', [MantenimientoController::class, 'index']);
+    Route::post('/dashboard/mantenimiento', [MantenimientoController::class, 'store']);
+    Route::put('/dashboard/mantenimiento/{id}', [MantenimientoController::class, 'update']);
+    Route::delete('/dashboard/mantenimiento/{id}', [MantenimientoController::class, 'destroy']);
 });
 

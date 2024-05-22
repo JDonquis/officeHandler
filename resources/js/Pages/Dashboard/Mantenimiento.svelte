@@ -7,393 +7,278 @@
     import { useForm } from "@inertiajs/svelte";
 
     let emptyDataForm = {
-        type_activity_id: "",
-        area_id: "",
-        status_id: "",
-        title: "",
+        machine_id: "",
+        date: "",
+        time: "",
+        type_service_id: "",
+        description: "",
         user_id: "",
-        start_date: "",
-        end_date: "",
-        location_id: "",
-        office_id: "",
-        division_id: "",
-        department_id: "",
-        progress: "",
+        status: "",
         observation: "",
-    }
+    };
 
     let formCreate = useForm({
-       ...emptyDataForm
+        ...emptyDataForm,
     });
 
     let formEdit = useForm({
-       ...emptyDataForm
+        ...emptyDataForm,
     });
 
     $: showModal = false;
-    $: showModalFormEdit = false
+    $: showModalFormEdit = false;
     $: selectedRow = { status: false, id: 0 };
-
-
 
     function handleSubmit(event) {
         event.preventDefault();
         $formCreate.clearErrors();
-        $formCreate.post("/dashboard/bitacora", {
+        $formCreate.post("/dashboard/mantenimiento", {
             onError: (errors) => {
                 if (errors.data) {
                     displayAlert({ type: "error", message: errors.data });
                 }
             },
             onSuccess: (mensaje) => {
-                $formCreate.reset()
-                displayAlert({ type: "success", message: 'Ok todo salió bien' });
-                showModal = false
-                
+                $formCreate.reset();
+                displayAlert({
+                    type: "success",
+                    message: "Ok todo salió bien",
+                });
+                showModal = false;
             },
         });
     }
     function handleEdit(event) {
         event.preventDefault();
         $formEdit.clearErrors();
-        $formEdit.put(`/dashboard/bitacora/${$formEdit.id}`, {
+        $formEdit.put(`/dashboard/mantenimiento/${$formEdit.id}`, {
             onError: (errors) => {
                 if (errors.data) {
                     displayAlert({ type: "error", message: errors.data });
                 }
             },
             onSuccess: (mensaje) => {
-                $formEdit.reset()
-                displayAlert({ type: "success", message: 'Ok todo salió bien' });
-                showModalFormEdit = false
-                selectedRow = {status: false, id:0, row: {}}
-                
+                $formEdit.reset();
+                displayAlert({
+                    type: "success",
+                    message: "Ok todo salió bien",
+                });
+                showModalFormEdit = false;
+                selectedRow = { status: false, id: 0, row: {} };
             },
         });
     }
     function handleDelete(id) {
-        $formCreate.delete(`/dashboard/bitacora/${id}`, {
-            onBefore: () => confirm(`¿Está seguro de eliminar la actividad ${selectedRow.title}?`)
-        })
+        $formCreate.delete(`/dashboard/mantenimiento/${id}`, {
+            onBefore: () => {
+                confirm(
+                    `¿Está seguro de eliminar este mantenimiento ${selectedRow.name} ${selectedRow.model}?`,
+                ),
+                selectedRow = { status: false, id: 0 }
+
+            }
+        });
     }
     export let data = [];
-
-
+    console.log(data);
     function fillFormToEdit() {
-        $formEdit.reset()
-        showModalFormEdit = true
+        $formEdit.reset();
+        showModalFormEdit = true;
     }
-
 </script>
 
 <Alert />
 
 {#if showModal}
-<Modal bind:showModal>
-    <h2 slot="header" class="text-sm text-center">CREAR ACTIVIDAD</h2>
+    <Modal bind:showModal>
+        <h2 slot="header" class="text-sm text-center">CREAR MAQUINA</h2>
 
-    <form
-        id="a-form"
-        on:submit={handleSubmit}
-        action=""
-        class="w-[500px] grid grid-cols-2 gap-x-5"
-    >
-        <Input
-            type="text"
-            required={true}
-            label={"Nombre de la actividad"}
-            bind:value={$formCreate.title}
-            error={$formCreate.errors?.title}
+        <form
+            id="a-form"
+            on:submit={handleSubmit}
+            action=""
+            class="w-[500px] grid grid-cols-2 gap-x-5"
+        >
+            <Input
+                type="text"
+                required={true}
+                label={"Código"}
+                bind:value={$formCreate.code}
+                error={$formCreate.errors?.code}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Equipo"}
+                bind:value={$formCreate.name}
+                error={$formCreate.errors?.name}
+            />
+            <Input
+                type="text"
+                label={"Marca"}
+                bind:value={$formCreate.brand}
+                error={$formCreate.errors?.brand}
+            />
+
+            <Input
+                type="text"
+                required={true}
+                label={"Modelo"}
+                bind:value={$formCreate.model}
+                error={$formCreate.errors?.model}
+            />
+
+            <Input
+                type="text"
+                label={"Fabricante"}
+                bind:value={$formCreate.manufacturer}
+                error={$formCreate.errors?.manufacturer}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Código de serie"}
+                bind:value={$formCreate.serial_number}
+                error={$formCreate.errors?.serial_number}
+            />
+
+            <!-- <Input
+                type="file"
+                label={"Foto"}
+                bind:value={$formCreate.photo}
+                error={$formCreate.errors?.photo}
+            /> -->
+
+            <Input
+                type="textarea"
+                name=""
+                id=""
+                label={"Observación"}
+                bind:value={$formCreate.observation}
+                classes={"col-span-2"}
+                error={$formCreate.errors?.observation}
+            />
+            <label class="mt-3">
+                Foto:
+
+                <input
+                    type="file"
+                    on:input={(e) => ($formCreate.photo = e.target.files[0])}
+                />
+            </label>
+        </form>
+        <input
+            form="a-form"
+            slot="btn_footer"
+            type="submit"
+            disabled={$formCreate.processing}
+            value={$formCreate.processing ? "Cargando..." : "Guardar"}
+            class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
         />
-        <Input
-            type="select"
-            required={true}
-            label={"Tipo de actividad"}
-            bind:value={$formCreate.type_activity_id}
-            error={$formCreate.errors?.type_activity_id}
-        >
-            {#each data.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"Ubicación SSF"}
-            bind:value={$formCreate.location_id}
-            error={$formCreate.errors?.location_id}
-        >
-            {#each data.locations as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"Dirección/Oficina"}
-            bind:value={$formCreate.office_id}
-            error={$formCreate.errors?.office_id}
-        >
-            {#each data.offices as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"División"}
-            bind:value={$formCreate.division_id}
-            error={$formCreate.errors?.division_id}
-        >
-            {#each data.divisions as option}
-                {#if option.office_id == $formCreate.office_id || option.id == 1}
-                    <option value={option.id}>{option.name}</option>
-                {/if}
-            {/each}
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Departamento"}
-            bind:value={$formCreate.department_id}
-            error={$formCreate.errors?.department_id}
-        >
-            {#each data.departments as option}
-                {#if (option.division_id == $formCreate.division_id && option.division.office_id == $formCreate.office_id) || option.id == 1}
-                    <option value={option.id}>{option.name}</option>
-                {/if}
-            {/each}
-        </Input>
-
-        <Input
-            type="date"
-            required={true}
-            label={"Fecha de inicio"}
-            bind:value={$formCreate.start_date}
-            error={$formCreate.errors?.start_date}
-        />
-        <Input
-            type="date"
-            label={"Fecha de finalización"}
-            bind:value={$formCreate.end_date}
-            error={$formCreate.errors?.end_date}
-        />
-
-        <Input
-            type="number"
-            label={"Progreso"}
-            bind:value={$formCreate.progress}
-            error={$formCreate.errors?.progress}
-        />
-        <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formCreate.status_id}
-            error={$formCreate.errors?.status_id}
-        >
-            {#each data.status as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Area"}
-            bind:value={$formCreate.area_id}
-            error={$formCreate.errors?.area_id}
-        >
-            {#each data.areas as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-        <Input
-            type="textarea"
-            name=""
-            id=""
-            label={"Observación"}
-            bind:value={$formCreate.observation}
-            error={$formCreate.errors?.observation}
-        />
-    </form>
-    <input
-        form="a-form"
-        slot="btn_footer"
-        type="submit"
-        value={$formCreate.processing ? "Cargando..." : "Guardar"}
-        class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
-    />
-</Modal>
+    </Modal>
 {/if}
-
 
 {#if showModalFormEdit}
-<Modal bind:showModal={showModalFormEdit}>
-    <h2 slot="header" class="text-sm text-center">EDITAR ACTIVIDAD</h2>
+    <Modal bind:showModal={showModalFormEdit}>
+        <h2 slot="header" class="text-sm text-center">EDITAR MAQUINA</h2>
 
-    <form
-        id="a-form"
-        on:submit={handleEdit}
-        action=""
-        class="w-[500px] grid grid-cols-2 gap-x-5"
-    >
-        <Input
-            type="text"
-            required={true}
-            label={"Nombre de la actividad"}
-            bind:value={$formEdit.title}
-            error={$formEdit.errors?.title}
+        <form
+            id="a-form"
+            on:submit={handleEdit}
+            action=""
+            class="w-[500px] grid grid-cols-2 gap-x-5"
+        >
+            <Input
+                type="text"
+                required={true}
+                label={"Código"}
+                bind:value={$formEdit.code}
+                error={$formEdit.errors?.code}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Equipo"}
+                bind:value={$formEdit.name}
+                error={$formEdit.errors?.name}
+            />
+            <Input
+                type="text"
+                label={"Marca"}
+                bind:value={$formEdit.brand}
+                error={$formEdit.errors?.brand}
+            />
+
+            <Input
+                type="text"
+                label={"Modelo"}
+                bind:value={$formEdit.model}
+                error={$formEdit.errors?.model}
+            />
+
+            <Input
+                type="text"
+                label={"Fabricante"}
+                bind:value={$formEdit.manufacturer}
+                error={$formEdit.errors?.manufacturer}
+            />
+            <Input
+                type="text"
+                required={true}
+                label={"Código de serie"}
+                bind:value={$formEdit.serial_number}
+                error={$formEdit.errors?.serial_number}
+            />
+
+            <!-- <Input
+        type="file"
+        label={"Foto"}
+        bind:value={$formEdit.photo}
+        error={$formEdit.errors?.photo}
+    /> -->
+
+            <Input
+                type="textarea"
+                name=""
+                id=""
+                label={"Observación"}
+                bind:value={$formEdit.observation}
+                classes={"col-span-2"}
+                error={$formEdit.errors?.observation}
+            />
+        </form>
+        <input
+            form="a-form"
+            slot="btn_footer"
+            type="submit"
+            disabled={$formEdit.processing}
+            value={$formEdit.processing ? "Cargando..." : "Editar"}
+            class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
         />
-        <Input
-            type="select"
-            required={true}
-            label={"Tipo de actividad"}
-            bind:value={$formEdit.type_activity_id}
-            error={$formEdit.errors?.type_activity_id}
-        >
-            {#each data.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"Ubicación SSF"}
-            bind:value={$formEdit.location_id}
-            error={$formEdit.errors?.location_id}
-        >
-            {#each data.locations as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"Dirección/Oficina"}
-            bind:value={$formEdit.office_id}
-            error={$formEdit.errors?.office_id}
-        >
-            {#each data.offices as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-
-        <Input
-            type="select"
-            required={true}
-            label={"División"}
-            bind:value={$formEdit.division_id}
-            error={$formEdit.errors?.division_id}
-        >
-            {#each data.divisions as option}
-                {#if option.office_id == $formEdit.office_id || option.id == 1}
-                    <option value={option.id}>{option.name}</option>
-                {/if}
-            {/each}
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Departamento"}
-            bind:value={$formEdit.department_id}
-            error={$formEdit.errors?.department_id}
-        >
-            {#each data.departments as option}
-                {#if (option.division_id == $formEdit.division_id && option.division.office_id == $formEdit.office_id) || option.id == 1}
-                    <option value={option.id}>{option.name}</option>
-                {/if}
-            {/each}
-        </Input>
-
-        <Input
-            type="date"
-            required={true}
-            label={"Fecha de inicio"}
-            bind:value={$formEdit.start_date}
-            error={$formEdit.errors?.start_date}
-        />
-        <Input
-            type="date"
-            label={"Fecha de finalización"}
-            bind:value={$formEdit.end_date}
-            error={$formEdit.errors?.end_date}
-        />
-
-        <Input
-            type="number"
-            label={"Progreso"}
-            bind:value={$formEdit.progress}
-            error={$formEdit.errors?.progress}
-        />
-        <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formEdit.status_id}
-            error={$formEdit.errors?.status_id}
-        >
-            {#each data.status as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Area"}
-            bind:value={$formEdit.area_id}
-            error={$formEdit.errors?.area_id}
-        >
-            {#each data.areas as option}
-                <option value={option.id}>{option.name}</option>
-            {/each}
-        </Input>
-        <Input
-            type="textarea"
-            name=""
-            id=""
-            label={"Observación"}
-            bind:value={$formEdit.observation}
-            error={$formEdit.errors?.observation}
-        />
-    </form>
-    <input
-        form="a-form"
-        slot="btn_footer"
-        type="submit"
-        value={$formEdit.processing ? "Cargando..." : "Editar"}
-        class="hover:bg-color3 hover:text-white duration-200 mt-auto w-full bg-color2 text-black font-bold py-3 rounded-md cursor-pointer"
-    />
-</Modal>
+    </Modal>
 {/if}
 
-
 <div class="flex justify-between">
-    <h1>Bitácora</h1>
+    <h1>Mantenimiento</h1>
 
-    <button class="btn_create " on:click={() => {
-        showModal = true
-
-    }}
-        >Nueva actividad</button
+    <button
+        class="btn_create"
+        on:click={() => {
+            showModal = true;
+        }}>Nueva maquina</button
     >
 </div>
 
 <Table
     {selectedRow}
     serverSideData={{
-        ...data.activities,
+        ...data?.machines,
         data: "",
         filters: data.filters,
     }}
     on:fillFormToEdit={fillFormToEdit}
     on:clickDeleteIcon={() => {
-        handleDelete(selectedRow.id)
-
+        handleDelete(selectedRow.id);
     }}
 >
     <thead slot="thead" class="sticky top-0 z-50">
@@ -409,15 +294,14 @@
         </tr>
     </thead>
     <tbody slot="tbody">
-        {#each data.activities.data as row}
+        {#each data.machines?.data as row}
             <tr
                 on:click={(e) => {
                     // let newSelectedRowStatus = !selectedRow.status;
-                    if (row.id != selectedRow.id ) {
+                    if (row.id != selectedRow.id) {
                         selectedRow = {
                             status: true,
-                            id: row.id,
-                            title: row.title
+                            ...row
                         };
                         $formEdit.defaults({
                             ...row,
@@ -426,41 +310,26 @@
                         selectedRow = {
                             status: false,
                             id: 0,
-                            title: '',
-
+                            title: "",
                         };
                         $formEdit.defaults({
-                            ...emptyDataForm
+                            ...emptyDataForm,
+                            photo: "",
                         });
                     }
                 }}
                 class={`cursor-pointer hover:bg-grayBlue hover:bg-opacity-5 ${selectedRow.id == row.id ? "bg-grayBlue hover:bg-opacity-10 bg-opacity-10 brightness-110" : ""}`}
             >
                 <td>{row.code}</td>
-                <td>{row.title}</td>
-                <td>
-                    <div
-                        class={`inline px-3 py-1 text-sm  rounded-full dark:bg-gray-800  gap-x-2 font-light tracking-wide`}
-                        class:text-ligthGreen={row.status_id == "2"}
-                        class:dark:text-redLight={row.status_id == "3"}
-                    >
-                        {row.status_name}
-                    </div>
-                </td>
-                <td>{row.location_name}</td>
-                <td>{row.office_name}</td>
-                <td>
-                    <p class="text-center text-xs text-gray-300">
-                        {row.progress}%
-                    </p>
-                    <progress id="file" value={100 - row.progress} max="100">
-                        {row.progress}%
-                    </progress>
-                </td>
-                <td>{row.today_date}</td>
-                <td>{row.start_date}</td>
-                <td>{row.end_date === null ? "Sin Finalizar" : row.end_date}</td
-                >
+                <td>{row.name}</td>
+                <td>{row.brand}</td>
+
+                <td>{row.model}</td>
+                <td>{row.manufacturer}</td>
+
+                <td>{row.serial_number}</td>
+                <td> <img class="max-w-[150px]" src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
+                <td>{row.observation}</td>
             </tr>
         {/each}
     </tbody>

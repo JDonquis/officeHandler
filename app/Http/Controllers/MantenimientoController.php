@@ -3,63 +3,65 @@
 namespace App\Http\Controllers;
 
 use inertia;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\MantenimientoService;
+use App\Http\Requests\MantenimientoRequest;
 
 class MantenimientoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function __construct()
     {
-        return inertia('Dashboard/Mantenimiento');
+        $this->mantenimientoService = new MantenimientoService;
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $services = $this->mantenimientoService->getServices($request);
+        $user = User::get();
+
+        return inertia('Dashboard/Mantenimiento',
+        [
+            'data' =>
+            [ 
+            "services" => $services,
+            "user" => $user,
+            "filters" => $request->only(['search']),
+    
+            ]
+        
+        ]);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function store(MantenimientoRequest $request)
     {
-        //
+        $this->mantenimientoService->create($request->all());
+        return redirect('/dashboard/mantenimiento');
+        
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MantenimientoRequest $request, $id)
     {
-        //
+        $this->mantenimientoService->update($request,$id);
+        return redirect('/dashboard/mantenimiento');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        Service::destroy($id);
+        return redirect('/dashboard/mantenimiento');
+        
     }
 }

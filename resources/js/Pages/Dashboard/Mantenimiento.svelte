@@ -101,17 +101,6 @@
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
         
-    let emptyDataForm = {
-        machine_id: "",
-        type_service_id: "",
-        user_id: "",
-        start: "",
-        description: "",
-        status: "",
-        duration: "",
-        end: "",
-        next_service_date: "",
-    };
             <Input
                 type="text"
                 required={true}
@@ -134,9 +123,9 @@
             bind:value={$formCreate.status}
             error={$formCreate.errors?.status}
         >
-            {#each data.type_activities as option}
+            <!-- {#each data?.type_activities as option}
                 <option value={option.id}>{option.name}</option>
-            {/each}
+            {/each} -->
         </Input>
         <Input
             type="select"
@@ -145,9 +134,9 @@
             bind:value={$formCreate.user_id}
             error={$formCreate.errors?.user_id}
         >
-            {#each data.type_activities as option}
+            <!-- {#each data?.type_activities as option}
                 <option value={option.id}>{option.name}</option>
-            {/each}
+            {/each} -->
         </Input>
             <Input
                 type="date"
@@ -173,9 +162,9 @@
             bind:value={$formCreate.user_id}
             error={$formCreate.errors?.user_id}
         >
-            {#each data.type_activities as option}
+            <!-- {#each data?.type_activities as option}
                 <option value={option.id}>{option.name}</option>
-            {/each}
+            {/each} -->
         </Input>
        
             <Input
@@ -223,7 +212,7 @@
 
 {#if showModalFormEdit}
     <Modal bind:showModal={showModalFormEdit}>
-        <h2 slot="header" class="text-sm text-center">EDITAR MAQUINA</h2>
+        <h2 slot="header" class="text-sm text-center">EDITAR MANTENIMIENTO</h2>
 
         <form
             id="a-form"
@@ -308,10 +297,10 @@
         class="btn_create"
         on:click={() => {
             showModal = true;
-        }}>Nueva maquina</button
+        }}>Nueva mantenimiento</button
     >
 </div>
-
+<!-- 
 <Table
     {selectedRow}
     serverSideData={{
@@ -326,7 +315,7 @@
 >
     <thead slot="thead" class="sticky top-0 z-50">
         <tr>
-            <th>Maquina</th>
+            <th>MANTENIMIENTO</th>
             <th>Tipo de mantenimiento</th>
             <th>Estado</th>
             <th>Responsble</th>
@@ -377,4 +366,4 @@
             </tr>
         {/each}
     </tbody>
-</Table>
+</Table> -->

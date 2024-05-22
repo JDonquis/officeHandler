@@ -246,14 +246,6 @@
                 classes={"col-span-2"}
                 error={$formEdit.errors?.observation}
             />
-            <label class="mt-3">
-                Foto:
-
-                <input
-                    type="file"
-                    on:input={(e) => ($formEdit.photo = e.target.files[0])}
-                />
-            </label>
         </form>
         <input
             form="a-form"
@@ -322,6 +314,7 @@
                         };
                         $formEdit.defaults({
                             ...emptyDataForm,
+                            photo: "",
                         });
                     }
                 }}
@@ -335,7 +328,7 @@
                 <td>{row.manufacturer}</td>
 
                 <td>{row.serial_number}</td>
-                <td><img src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
+                <td> <img class="max-w-[150px]" src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
                 <td>{row.observation}</td>
             </tr>
         {/each}

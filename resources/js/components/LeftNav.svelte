@@ -5,20 +5,19 @@
     // console.log(url)
     import {toggleMenu} from "../stores/navStatus.js"
     import { inertia, page } from "@inertiajs/svelte";
-
     const navPages = [
         {
-            icon: "mdi:patient-outline",
+            icon: "circum:box-list",
             href: "/dashboard/bitacora",
             name: "Bitácora",
         },
         {
-            icon: "mdi:patient-outline",
+            icon: "game-icons:pc",
             href: "/dashboard/maquinas",
             name: "Maquinas",
         },
         {
-            icon: "mdi:patient-outline",
+            icon: "vaadin:tools",
             href: "/dashboard/mantenimiento",
             name: "Mantenimiento",
         },
@@ -27,7 +26,7 @@
 </script>
 
 <nav class="left_nav rounded-tr-xl pt-2 text-gray-200 h-full relative">
-    <button on:click={() => toggleMenu()} class="hidden md:block d-flex mx-2 w-11/12  items-center pt-1  text-center text-2xl text-gray-300 hover:text-color2 hover:bg-gray-950">
+    <button on:click={() => toggleMenu()} class="burger_icon hidden md:block d-flex mx-2 w-11/12  items-center pt-1  text-center text-2xl text-gray-300 hover:text-color2 hover:bg-gray-950">
 
         <iconify-icon class="mb-0 pb-0" icon="majesticons:menu-expand-left-line"></iconify-icon>
     </button>

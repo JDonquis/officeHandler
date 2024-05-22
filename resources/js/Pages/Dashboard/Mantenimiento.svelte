@@ -100,48 +100,97 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
+        
+    let emptyDataForm = {
+        machine_id: "",
+        type_service_id: "",
+        user_id: "",
+        start: "",
+        description: "",
+        status: "",
+        duration: "",
+        end: "",
+        next_service_date: "",
+    };
             <Input
                 type="text"
                 required={true}
-                label={"Código"}
-                bind:value={$formCreate.code}
-                error={$formCreate.errors?.code}
+                label={"Maquina"}
+                bind:value={$formCreate.machine_id}
+                error={$formCreate.errors?.machine_id}
             />
             <Input
-                type="text"
+                type="select"
                 required={true}
-                label={"Equipo"}
-                bind:value={$formCreate.name}
-                error={$formCreate.errors?.name}
+                label={"Tipo de mantenimiento"}
+                bind:value={$formCreate.type_service_id}
+                error={$formCreate.errors?.type_service_id}
+            >
+            </Input>
+            <Input
+            type="select"
+            required={true}
+            label={"Estado"}
+            bind:value={$formCreate.status}
+            error={$formCreate.errors?.status}
+        >
+            {#each data.type_activities as option}
+                <option value={option.id}>{option.name}</option>
+            {/each}
+        </Input>
+        <Input
+            type="select"
+            required={true}
+            label={"Responsable"}
+            bind:value={$formCreate.user_id}
+            error={$formCreate.errors?.user_id}
+        >
+            {#each data.type_activities as option}
+                <option value={option.id}>{option.name}</option>
+            {/each}
+        </Input>
+            <Input
+                type="date"
+                label={"Fecha de inicio"}
+                bind:value={$formCreate.start}
+                error={$formCreate.errors?.start}
             />
             <Input
-                type="text"
-                label={"Marca"}
-                bind:value={$formCreate.brand}
-                error={$formCreate.errors?.brand}
-            />
+            type="textarea"
+            name=""
+            id=""
+            label={"Descripción"}
+            bind:value={$formCreate.description}
+            classes={"col-span-2"}
+            error={$formCreate.errors?.description}
+        />
+            
 
             <Input
-                type="text"
-                required={true}
-                label={"Modelo"}
-                bind:value={$formCreate.model}
-                error={$formCreate.errors?.model}
-            />
-
-            <Input
-                type="text"
-                label={"Fabricante"}
-                bind:value={$formCreate.manufacturer}
-                error={$formCreate.errors?.manufacturer}
-            />
+            type="select"
+            required={true}
+            label={"Estado"}
+            bind:value={$formCreate.user_id}
+            error={$formCreate.errors?.user_id}
+        >
+            {#each data.type_activities as option}
+                <option value={option.id}>{option.name}</option>
+            {/each}
+        </Input>
+       
             <Input
                 type="text"
                 required={true}
-                label={"Código de serie"}
-                bind:value={$formCreate.serial_number}
-                error={$formCreate.errors?.serial_number}
+                label={"Duración en hr"}
+                bind:value={$formCreate.duration}
+                error={$formCreate.errors?.duration}
             />
+            <Input
+            type="date"
+            label={"Fecha de entrega"}
+            bind:value={$formCreate.end}
+            error={$formCreate.errors?.end}
+        />
 
             <!-- <Input
                 type="file"
@@ -150,15 +199,8 @@
                 error={$formCreate.errors?.photo}
             /> -->
 
-            <Input
-                type="textarea"
-                name=""
-                id=""
-                label={"Observación"}
-                bind:value={$formCreate.observation}
-                classes={"col-span-2"}
-                error={$formCreate.errors?.observation}
-            />
+            
+           
             <label class="mt-3">
                 Foto:
 

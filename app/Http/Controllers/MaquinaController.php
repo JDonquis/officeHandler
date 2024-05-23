@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use inertia;
 use App\Models\Office;
 use App\Models\Machine;
+use App\Models\Service;
 use App\Models\Division;
 use App\Models\Location;
 use App\Models\Department;
@@ -78,7 +79,18 @@ class MaquinaController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {
+    {   
+        $service = Service::where('machine_id',$id)->first();
+        if(isset($service->id))
+        {
+            return response()->json([
+                'message' => 'Esta maquina no puede eliminarse debido a que ya se le hizo un mantenimiento.',
+                'errors' => [
+                    'machine_id' => ['Esta maquina no puede eliminarse debido a que ya se le hizo un mantenimiento.']
+                ]
+            ], 422);
+        }
+
         Machine::destroy($id);
         return redirect('/dashboard/maquinas');
     }

@@ -20,14 +20,14 @@ class MantenimientoController extends Controller
     public function index(Request $request)
     {
         $services = $this->mantenimientoService->getServices($request);
-        $user = User::get();
+        $users = User::get();
 
         return inertia('Dashboard/Mantenimiento',
         [
             'data' =>
             [ 
             "services" => $services,
-            "user" => $user,
+            "users" => $users,
             "filters" => $request->only(['search']),
     
             ]
@@ -39,7 +39,7 @@ class MantenimientoController extends Controller
 
     public function store(MantenimientoRequest $request)
     {
-        $this->mantenimientoService->create($request->all());
+        $this->mantenimientoService->create($request);
         return redirect('/dashboard/mantenimiento');
         
     }

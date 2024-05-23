@@ -16,7 +16,8 @@
     <label for={label} class="form__label" {placeholder}>{label} {required ? "*" : ""}</label>
     <div class="relative w-full parent_div">
         {#if type === "textarea"}
-            <textarea bind:value id={label} rows="1"></textarea>
+        <textarea bind:value id={label} rows="1"></textarea>
+        {:else if type === "select"}
              <select id={label} bind:value 
             >
                 <slot></slot>

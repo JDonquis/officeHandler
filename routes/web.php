@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function ()
     
     
     Route::get('/dashboard/maquinas', [MaquinaController::class, 'index']);
+    Route::get('/dashboard/maquinas/search', [MaquinaController::class, 'search']);
     Route::post('/dashboard/maquinas', [MaquinaController::class, 'store']);
     Route::put('/dashboard/maquinas/{id}', [MaquinaController::class, 'update']);
     Route::delete('/dashboard/maquinas/{id}', [MaquinaController::class, 'destroy']);

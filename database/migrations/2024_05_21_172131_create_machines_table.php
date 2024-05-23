@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('model');
             $table->string('manufacturer');
             $table->string('serial_number');
+            $table->foreignId('location_id');
+            $table->foreignId('office_id');
+            $table->foreignId('division_id');
+            $table->foreignId('department_id');
             $table->string('photo')->nullable();
             $table->text('observation')->nullable();
             $table->string('search')->nullable();

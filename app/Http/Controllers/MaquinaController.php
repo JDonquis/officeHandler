@@ -35,6 +35,13 @@ class MaquinaController extends Controller
         return inertia('Dashboard/Maquinas');
     }
 
+    public function search(Request $request)
+    {
+        $machines = $this->machineService->searchMachines($request);
+
+        return response()->json(['machines' => $machines]);
+    }
+
     
     /**
      * Store a newly created resource in storage.

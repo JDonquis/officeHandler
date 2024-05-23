@@ -4,9 +4,29 @@
     import Input from "../../components/Input.svelte";
     import Alert from "../../components/Alert.svelte";
     import { displayAlert } from "../../stores/alertStore";
-    import { useForm } from "@inertiajs/svelte";
+    import { useForm, router } from "@inertiajs/svelte";
+    import Maquinas from "./Maquinas.svelte";
+    let searchMachineText = "";
+    $: searchMachineText, handleSearch();
 
-    let isAllowAlertMaintenance = false
+    async function handleSearch(data) {
+        try {
+
+            const response = await fetch(`/dashboard/maquinas/search?search=${searchMachineText}`, {
+                method: "GET", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log("Success:", result);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     let emptyDataForm = {
         machine_id: "",
         type_service_id: "",
@@ -76,9 +96,8 @@
                 confirm(
                     `¿Está seguro de eliminar este mantenimiento ${selectedRow.name} ${selectedRow.model}?`,
                 ),
-                selectedRow = { status: false, id: 0 }
-
-            }
+                    (selectedRow = { status: false, id: 0 });
+            },
         });
     }
     export let data = [];
@@ -101,13 +120,11 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
-        
             <Input
                 type="text"
                 required={true}
                 label={"Maquina"}
-                bind:value={$formCreate.machine_id}
-                error={$formCreate.errors?.machine_id}
+                bind:value={searchMachineText}
             />
             <Input
                 type="select"
@@ -119,27 +136,18 @@
                 <option value="1">Preventivo</option>
                 <option value="2">Correctivo</option>
             </Input>
+
             <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formCreate.status}
-            error={$formCreate.errors?.status}
-        >
-            <option value="1">En proceso</option>
-            <option value="2">Completado</option>
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Responsable"}
-            bind:value={$formCreate.user_id}
-            error={$formCreate.errors?.user_id}
-        >
+                type="select"
+                required={true}
+                label={"Responsable"}
+                bind:value={$formCreate.user_id}
+                error={$formCreate.errors?.user_id}
+            >
                 {#each data?.users as option}
                     <option value={option.id}>{option.name}</option>
                 {/each}
-        </Input>
+            </Input>
             <Input
                 type="date"
                 label={"Fecha de inicio"}
@@ -147,37 +155,46 @@
                 error={$formCreate.errors?.start}
             />
             <Input
-            type="textarea"
-            name=""
-            id=""
-            label={"Descripción"}
-            bind:value={$formCreate.description}
-            error={$formCreate.errors?.description}
-        />
-            
-
-       
-            <Input
-                type="text"
-                required={true}
-                label={"Duración en hr"}
-                bind:value={$formCreate.duration}
-                error={$formCreate.errors?.duration}
+                type="textarea"
+                name=""
+                id=""
+                label={"Descripción"}
+                bind:value={$formCreate.description}
+                error={$formCreate.errors?.description}
             />
             <Input
-            type="date"
-            label={"Fecha de entrega"}
-            bind:value={$formCreate.end}
-            error={$formCreate.errors?.end}
-        />
+                type="select"
+                required={true}
+                label={"Estado"}
+                bind:value={$formCreate.status}
+                error={$formCreate.errors?.status}
+            >
+                <option value="1">En proceso</option>
+                <option value="2">Completado</option>
+            </Input>
 
-           
-<Input
-            type="date"
-            label={"Notificar prox mantenimiento el"}
-            bind:value={$formCreate.next_service_date}
-            error={$formCreate.errors?.next_service_date}
-        />
+            {#if $formCreate.status == 2}
+                <Input
+                    type="text"
+                    required={true}
+                    label={"Duración en hr"}
+                    bind:value={$formCreate.duration}
+                    error={$formCreate.errors?.duration}
+                />
+                <Input
+                    type="date"
+                    label={"Fecha de entrega"}
+                    bind:value={$formCreate.end}
+                    error={$formCreate.errors?.end}
+                />
+            {/if}
+
+            <Input
+                type="date"
+                label={"Notificar prox mantenimiento el"}
+                bind:value={$formCreate.next_service_date}
+                error={$formCreate.errors?.next_service_date}
+            />
         </form>
         <input
             form="a-form"
@@ -200,81 +217,78 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
-        <Input
-        type="text"
-        required={true}
-        label={"Maquina"}
-        bind:value={$formEdit.machine_id}
-        error={$formEdit.errors?.machine_id}
-    />
-    <Input
-        type="select"
-        required={true}
-        label={"Tipo de mantenimiento"}
-        bind:value={$formEdit.type_service_id}
-        error={$formEdit.errors?.type_service_id}
-    >
-        <option value="1">Preventivo</option>
-        <option value="2">Correctivo</option>
-    </Input>
-    <Input
-    type="select"
-    required={true}
-    label={"Estado"}
-    bind:value={$formEdit.status}
-    error={$formEdit.errors?.status}
->
-    <option value="1">En proceso</option>
-    <option value="2">Completado</option>
-</Input>
-<Input
-    type="select"
-    required={true}
-    label={"Responsable"}
-    bind:value={$formEdit.user_id}
-    error={$formEdit.errors?.user_id}
->
-        {#each data?.users as option}
-            <option value={option.id}>{option.name}</option>
-        {/each}
-</Input>
-    <Input
-        type="date"
-        label={"Fecha de inicio"}
-        bind:value={$formEdit.start}
-        error={$formEdit.errors?.start}
-    />
-    <Input
-    type="textarea"
-    name=""
-    id=""
-    label={"Descripción"}
-    bind:value={$formEdit.description}
-    error={$formEdit.errors?.description}
-/>
-    
+            <Input
+                type="text"
+                required={true}
+                label={"Maquina"}
+                bind:value={$formEdit.machine_id}
+                error={$formEdit.errors?.machine_id}
+            />
+            <Input
+                type="select"
+                required={true}
+                label={"Tipo de mantenimiento"}
+                bind:value={$formEdit.type_service_id}
+                error={$formEdit.errors?.type_service_id}
+            >
+                <option value="1">Preventivo</option>
+                <option value="2">Correctivo</option>
+            </Input>
+            <Input
+                type="select"
+                required={true}
+                label={"Estado"}
+                bind:value={$formEdit.status}
+                error={$formEdit.errors?.status}
+            >
+                <option value="1">En proceso</option>
+                <option value="2">Completado</option>
+            </Input>
+            <Input
+                type="select"
+                required={true}
+                label={"Responsable"}
+                bind:value={$formEdit.user_id}
+                error={$formEdit.errors?.user_id}
+            >
+                {#each data?.users as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
+            </Input>
+            <Input
+                type="date"
+                label={"Fecha de inicio"}
+                bind:value={$formEdit.start}
+                error={$formEdit.errors?.start}
+            />
+            <Input
+                type="textarea"
+                name=""
+                id=""
+                label={"Descripción"}
+                bind:value={$formEdit.description}
+                error={$formEdit.errors?.description}
+            />
 
+            <Input
+                type="text"
+                label={"Duración en hr"}
+                bind:value={$formEdit.duration}
+                error={$formEdit.errors?.duration}
+            />
+            <Input
+                type="date"
+                label={"Fecha de entrega"}
+                bind:value={$formEdit.end}
+                error={$formEdit.errors?.end}
+            />
 
-    <Input
-        type="text"
-        label={"Duración en hr"}
-        bind:value={$formEdit.duration}
-        error={$formEdit.errors?.duration}
-    />
-    <Input
-    type="date"
-    label={"Fecha de entrega"}
-    bind:value={$formEdit.end}
-    error={$formEdit.errors?.end}
-/>
-
-   
-<Input
-    type="date"
-    label={"Notificar prox mantenimiento el"}
-    bind:value={$formEdit.next_service_date}
-    error={$formEdit.errors?.next_service_date}
-/>
+            <Input
+                type="date"
+                label={"Notificar prox mantenimiento el"}
+                bind:value={$formEdit.next_service_date}
+                error={$formEdit.errors?.next_service_date}
+            />
         </form>
         <input
             form="a-form"
@@ -330,7 +344,7 @@
                     if (row.id != selectedRow.id) {
                         selectedRow = {
                             status: true,
-                            ...row
+                            ...row,
                         };
                         $formEdit.defaults({
                             ...row,
@@ -349,7 +363,12 @@
                 }}
                 class={`cursor-pointer hover:bg-grayBlue hover:bg-opacity-5 ${selectedRow.id == row.id ? "bg-grayBlue hover:bg-opacity-10 bg-opacity-10 brightness-110" : ""}`}
             >
-                <td>{row.machine_name} {row.machine_brand} {row.machine_model} {row.machine_code}</td>
+                <td
+                    >{row.machine_name}
+                    {row.machine_brand}
+                    {row.machine_model}
+                    {row.machine_code}</td
+                >
                 <td>{row.type_service_id}</td>
                 <td>{row.status}</td>
 

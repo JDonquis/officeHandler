@@ -6,6 +6,7 @@
     import { displayAlert } from "../../stores/alertStore";
     import { useForm } from "@inertiajs/svelte";
 
+    let isAllowAlertMaintenance = false
     let emptyDataForm = {
         machine_id: "",
         type_service_id: "",
@@ -115,6 +116,8 @@
                 bind:value={$formCreate.type_service_id}
                 error={$formCreate.errors?.type_service_id}
             >
+                <option value="1">Preventivo</option>
+                <option value="2">Correctivo</option>
             </Input>
             <Input
             type="select"
@@ -123,9 +126,8 @@
             bind:value={$formCreate.status}
             error={$formCreate.errors?.status}
         >
-            <!-- {#each data?.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each} -->
+            <option value="1">En proceso</option>
+            <option value="2">Completado</option>
         </Input>
         <Input
             type="select"
@@ -134,9 +136,9 @@
             bind:value={$formCreate.user_id}
             error={$formCreate.errors?.user_id}
         >
-            <!-- {#each data?.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each} -->
+                {#each data?.users as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
         </Input>
             <Input
                 type="date"
@@ -150,22 +152,10 @@
             id=""
             label={"Descripción"}
             bind:value={$formCreate.description}
-            classes={"col-span-2"}
             error={$formCreate.errors?.description}
         />
             
 
-            <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formCreate.user_id}
-            error={$formCreate.errors?.user_id}
-        >
-            <!-- {#each data?.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each} -->
-        </Input>
        
             <Input
                 type="text"
@@ -181,23 +171,13 @@
             error={$formCreate.errors?.end}
         />
 
-            <!-- <Input
-                type="file"
-                label={"Foto"}
-                bind:value={$formCreate.photo}
-                error={$formCreate.errors?.photo}
-            /> -->
-
-            
            
-            <label class="mt-3">
-                Foto:
-
-                <input
-                    type="file"
-                    on:input={(e) => ($formCreate.photo = e.target.files[0])}
-                />
-            </label>
+<Input
+            type="date"
+            label={"Notificar prox mantenimiento el"}
+            bind:value={$formCreate.next_service_date}
+            error={$formCreate.errors?.next_service_date}
+        />
         </form>
         <input
             form="a-form"
@@ -220,64 +200,81 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
-            <Input
-                type="text"
-                required={true}
-                label={"Código"}
-                bind:value={$formEdit.code}
-                error={$formEdit.errors?.code}
-            />
-            <Input
-                type="text"
-                required={true}
-                label={"Equipo"}
-                bind:value={$formEdit.name}
-                error={$formEdit.errors?.name}
-            />
-            <Input
-                type="text"
-                label={"Marca"}
-                bind:value={$formEdit.brand}
-                error={$formEdit.errors?.brand}
-            />
+        <Input
+        type="text"
+        required={true}
+        label={"Maquina"}
+        bind:value={$formEdit.machine_id}
+        error={$formEdit.errors?.machine_id}
+    />
+    <Input
+        type="select"
+        required={true}
+        label={"Tipo de mantenimiento"}
+        bind:value={$formEdit.type_service_id}
+        error={$formEdit.errors?.type_service_id}
+    >
+        <option value="1">Preventivo</option>
+        <option value="2">Correctivo</option>
+    </Input>
+    <Input
+    type="select"
+    required={true}
+    label={"Estado"}
+    bind:value={$formEdit.status}
+    error={$formEdit.errors?.status}
+>
+    <option value="1">En proceso</option>
+    <option value="2">Completado</option>
+</Input>
+<Input
+    type="select"
+    required={true}
+    label={"Responsable"}
+    bind:value={$formEdit.user_id}
+    error={$formEdit.errors?.user_id}
+>
+        {#each data?.users as option}
+            <option value={option.id}>{option.name}</option>
+        {/each}
+</Input>
+    <Input
+        type="date"
+        label={"Fecha de inicio"}
+        bind:value={$formEdit.start}
+        error={$formEdit.errors?.start}
+    />
+    <Input
+    type="textarea"
+    name=""
+    id=""
+    label={"Descripción"}
+    bind:value={$formEdit.description}
+    error={$formEdit.errors?.description}
+/>
+    
 
-            <Input
-                type="text"
-                label={"Modelo"}
-                bind:value={$formEdit.model}
-                error={$formEdit.errors?.model}
-            />
 
-            <Input
-                type="text"
-                label={"Fabricante"}
-                bind:value={$formEdit.manufacturer}
-                error={$formEdit.errors?.manufacturer}
-            />
-            <Input
-                type="text"
-                required={true}
-                label={"Código de serie"}
-                bind:value={$formEdit.serial_number}
-                error={$formEdit.errors?.serial_number}
-            />
+    <Input
+        type="text"
+        label={"Duración en hr"}
+        bind:value={$formEdit.duration}
+        error={$formEdit.errors?.duration}
+    />
+    <Input
+    type="date"
+    label={"Fecha de entrega"}
+    bind:value={$formEdit.end}
+    error={$formEdit.errors?.end}
+/>
 
-            <!-- <Input
-        type="file"
-        label={"Foto"}
-        bind:value={$formEdit.photo}
-        error={$formEdit.errors?.photo}
-    /> -->
-
-            <Input
-                type="textarea"
-                name=""
-                id=""
-                label={"Observación"}
-                bind:value={$formEdit.observation}
-                classes={"col-span-2"}
-                error={$formEdit.errors?.observation}
-            />
+   
+<Input
+    type="date"
+    label={"Notificar prox mantenimiento el"}
+    bind:value={$formEdit.next_service_date}
+    error={$formEdit.errors?.next_service_date}
+/>
         </form>
         <input
             form="a-form"
@@ -300,11 +297,11 @@
         }}>Nueva mantenimiento</button
     >
 </div>
-<!-- 
+
 <Table
     {selectedRow}
     serverSideData={{
-        ...data?.machines,
+        ...data?.services,
         data: "",
         filters: data.filters,
     }}
@@ -315,7 +312,7 @@
 >
     <thead slot="thead" class="sticky top-0 z-50">
         <tr>
-            <th>MANTENIMIENTO</th>
+            <th>Maquina</th>
             <th>Tipo de mantenimiento</th>
             <th>Estado</th>
             <th>Responsble</th>
@@ -323,11 +320,10 @@
             <th>Descripción</th>
             <th>Duración (hr)</th>
             <th>Fecha final</th>
-            <th>Prox Mantenimiento</th>
         </tr>
     </thead>
     <tbody slot="tbody">
-        {#each data.machines?.data as row}
+        {#each data.services?.data as row}
             <tr
                 on:click={(e) => {
                     // let newSelectedRowStatus = !selectedRow.status;
@@ -353,17 +349,17 @@
                 }}
                 class={`cursor-pointer hover:bg-grayBlue hover:bg-opacity-5 ${selectedRow.id == row.id ? "bg-grayBlue hover:bg-opacity-10 bg-opacity-10 brightness-110" : ""}`}
             >
-                <td>{row.code}</td>
-                <td>{row.name}</td>
-                <td>{row.brand}</td>
+                <td>{row.machine_name} {row.machine_brand} {row.machine_model} {row.machine_code}</td>
+                <td>{row.type_service_id}</td>
+                <td>{row.status}</td>
 
-                <td>{row.model}</td>
-                <td>{row.manufacturer}</td>
+                <td>{row.user_name}</td>
+                <td>{row.start}</td>
+                <td>{row.description}</td>
+                <td>{row.duration}</td>
 
-                <td>{row.serial_number}</td>
-                <td> <img class="max-w-[150px]" src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
-                <td>{row.observation}</td>
+                <td>{row.end}</td>
             </tr>
         {/each}
     </tbody>
-</Table> -->
+</Table>

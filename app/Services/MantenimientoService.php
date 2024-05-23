@@ -31,9 +31,12 @@ class MantenimientoService
 
             "id" => $service->id,
             'machine_id' => $service->machine_id,
+            'machine_code' => $service->machine->code,
             'machine_name' => $service->machine->name,
+            'machine_brand' => $service->machine->brand,
+            'machine_model' => $service->machine->model,
             'type_service_id' => $service->type_service_id,
-            'type_service_name' => $service->type_service->name,
+            'type_service_name' => $service->typeService->name,
             'user_id' => $service->user_id,
             'user_name' => $service->user->name,
             'user_last_name' => $service->user->last_name,

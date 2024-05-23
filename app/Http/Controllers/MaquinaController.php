@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use inertia;
+use App\Models\Office;
 use App\Models\Machine;
+use App\Models\Division;
+use App\Models\Location;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Services\MachineService;
 use App\Http\Requests\CreateMachineRequest;
@@ -20,12 +24,20 @@ class MaquinaController extends Controller
     public function index(Request $request)
     {   
         $machines = $this->machineService->getMachines($request);
+        $locations = Location::get();
+        $offices = Office::get();
+        $divisions = Division::get();
+        $departments = Department::with('division')->get();
 
         return inertia('Dashboard/Maquinas',
         [
             'data' =>
             [ 
             "machines" => $machines,
+            "locations" => $locations,
+            "offices" => $offices,
+            "divisions" => $divisions,
+            "departments" => $departments,
             "filters" => $request->only(['search']),
     
             ]

@@ -53,14 +53,13 @@ class MachineService
     public function searchMachines($request)
     {
         $machines = Machine::query()
-        ->when($request->input('search'), function ($query, $search) 
-        {
-            $query->where('search','like','%' . $search . '%');
-        })
-        ->get()
-        ->withQueryString()
-        ->through(fn($machine) => [
-
+    ->when($request->input('search'), function ($query, $search) {
+        $query->where('search', 'like', '%' . $search . '%');
+    })
+    ->with('location','office','division','department')
+    ->get()
+    ->map(function ($machine) {
+        return [
             "id" => $machine->id,
             "code" => $machine->code,
             "name" => $machine->name,
@@ -68,9 +67,18 @@ class MachineService
             "model" => $machine->model,
             "manufacturer" => $machine->manufacturer,
             "serial_number" => $machine->serial_number,
+            "location_id" => $machine->location->id,
+            "location_name" => $machine->location->name,
+            "office_id" => $machine->office->id,
+            "office_name" => $machine->office->name,
+            "division_id" => $machine->division->id,
+            "division_name" => $machine->division->name,
+            "department_id" => $machine->department->id,
+            "department_name" => $machine->department->name,
             "photo" => $machine->photo,
             "observation" => $machine->observation
-        ]);
+        ];
+    });
 
         return $machines;
     }

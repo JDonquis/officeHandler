@@ -75,13 +75,19 @@
                 confirm(
                     `¿Está seguro de eliminar este mantenimiento ${selectedRow.name} ${selectedRow.model}?`,
                 ),
-                selectedRow = { status: false, id: 0 }
-
-            }
+                    (selectedRow = { status: false, id: 0 });
+            },
         });
     }
     export let data = [];
     console.log(data);
+    let maintenance_alert = 'false';
+
+    function maintenance_alertChange(e) {
+        let maintenance_alert =  = e.target.value;
+        console.log(e.target.value)
+        console.log(maintenance_alert)
+    }
     function fillFormToEdit() {
         $formEdit.reset();
         showModalFormEdit = true;
@@ -100,7 +106,6 @@
             action=""
             class="w-[500px] grid grid-cols-2 gap-x-5"
         >
-        
             <Input
                 type="text"
                 required={true}
@@ -114,30 +119,29 @@
                 label={"Tipo de mantenimiento"}
                 bind:value={$formCreate.type_service_id}
                 error={$formCreate.errors?.type_service_id}
+            ></Input>
+            <Input
+                type="select"
+                required={true}
+                label={"Estado"}
+                bind:value={$formCreate.status}
+                error={$formCreate.errors?.status}
             >
+                <!-- {#each data?.type_activities as option}
+                <option value={option.id}>{option.name}</option>
+            {/each} -->
             </Input>
             <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formCreate.status}
-            error={$formCreate.errors?.status}
-        >
-            <!-- {#each data?.type_activities as option}
+                type="select"
+                required={true}
+                label={"Responsable"}
+                bind:value={$formCreate.user_id}
+                error={$formCreate.errors?.user_id}
+            >
+                <!-- {#each data?.type_activities as option}
                 <option value={option.id}>{option.name}</option>
             {/each} -->
-        </Input>
-        <Input
-            type="select"
-            required={true}
-            label={"Responsable"}
-            bind:value={$formCreate.user_id}
-            error={$formCreate.errors?.user_id}
-        >
-            <!-- {#each data?.type_activities as option}
-                <option value={option.id}>{option.name}</option>
-            {/each} -->
-        </Input>
+            </Input>
             <Input
                 type="date"
                 label={"Fecha de inicio"}
@@ -145,28 +149,26 @@
                 error={$formCreate.errors?.start}
             />
             <Input
-            type="textarea"
-            name=""
-            id=""
-            label={"Descripción"}
-            bind:value={$formCreate.description}
-            classes={"col-span-2"}
-            error={$formCreate.errors?.description}
-        />
-            
+                type="textarea"
+                name=""
+                id=""
+                label={"Descripción"}
+                bind:value={$formCreate.description}
+                error={$formCreate.errors?.description}
+            />
 
             <Input
-            type="select"
-            required={true}
-            label={"Estado"}
-            bind:value={$formCreate.user_id}
-            error={$formCreate.errors?.user_id}
-        >
-            <!-- {#each data?.type_activities as option}
+                type="select"
+                required={true}
+                label={"Estado"}
+                bind:value={$formCreate.user_id}
+                error={$formCreate.errors?.user_id}
+            >
+                <!-- {#each data?.type_activities as option}
                 <option value={option.id}>{option.name}</option>
             {/each} -->
-        </Input>
-       
+            </Input>
+
             <Input
                 type="text"
                 required={true}
@@ -175,11 +177,11 @@
                 error={$formCreate.errors?.duration}
             />
             <Input
-            type="date"
-            label={"Fecha de entrega"}
-            bind:value={$formCreate.end}
-            error={$formCreate.errors?.end}
-        />
+                type="date"
+                label={"Fecha de entrega"}
+                bind:value={$formCreate.end}
+                error={$formCreate.errors?.end}
+            />
 
             <!-- <Input
                 type="file"
@@ -187,17 +189,31 @@
                 bind:value={$formCreate.photo}
                 error={$formCreate.errors?.photo}
             /> -->
-
-            
-           
-            <label class="mt-3">
-                Foto:
-
-                <input
-                    type="file"
-                    on:input={(e) => ($formCreate.photo = e.target.files[0])}
+            <label for="">Alertar mantenimiento</label>
+            <input
+                checked={maintenance_alert == 'false'}
+                on:change={maintenance_alertChange}
+                type="radio"
+                name="maintenance_alert"
+                value={'false'}
+            />
+            No
+            <input
+                checked={maintenance_alert == 'true'}
+                on:change={maintenance_alertChange}
+                type="radio"
+                name="maintenance_alert"
+                value={'true'}
+            />
+            Si
+            {#if maintenance_alert  == 'true'}
+                <Input
+                    type="date"
+                    label={"Alertar mantenimiento el dia"}
+                    bind:value={$formCreate.next_service_date}
+                    error={$formCreate.errors?.next_service_date}
                 />
-            </label>
+            {/if}
         </form>
         <input
             form="a-form"

@@ -83,12 +83,9 @@ class MaquinaController extends Controller
         $service = Service::where('machine_id',$id)->first();
         if(isset($service->id))
         {
-            return response()->json([
-                'message' => 'Esta maquina no puede eliminarse debido a que ya se le hizo un mantenimiento.',
-                'errors' => [
-                    'machine_id' => ['Esta maquina no puede eliminarse debido a que ya se le hizo un mantenimiento.']
-                ]
-            ], 422);
+
+            return redirect('/dashboard/maquinas')->withErrors(['data' => 'Esta maquina no puede eliminarse debido a que ya se le hizo un mantenimiento']);
+
         }
 
         Machine::destroy($id);

@@ -14,6 +14,7 @@ class Machine extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'code',
         'name',
         'brand',

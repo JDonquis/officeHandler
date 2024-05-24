@@ -95,6 +95,7 @@
         </div>
         {#if selectedRow.status}
             <div class="flex gap-5 relative items-end">
+                <slot name="selectedButtons" />
                 <button
                     on:click={() => dispatch("fillFormToEdit")}
                     class="bg-color3 bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-color3 px-4 py-1"

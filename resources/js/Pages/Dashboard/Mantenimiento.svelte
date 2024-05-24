@@ -69,27 +69,22 @@
     function handleSubmit(event) {
         event.preventDefault();
         $formCreate.clearErrors();
-
-        $formCreate
-            .transform((data) => ({
-                ...data,
-                machine_id: selectedRow.id
-            }))
-            .post("/dashboard/mantenimiento", {
-                onError: (errors) => {
-                    if (errors.data) {
-                        displayAlert({ type: "error", message: errors.data });
-                    }
-                },
-                onSuccess: (mensaje) => {
-                    $formCreate.reset();
-                    displayAlert({
-                        type: "success",
-                        message: "Ok todo salió bien",
-                    });
-                    showModal = false;
-                },
-            });
+        $formCreate.machine_id = selectedSearch.id;
+        $formCreate.post("/dashboard/mantenimiento", {
+            onError: (errors) => {
+                if (errors.data) {
+                    displayAlert({ type: "error", message: errors.data });
+                }
+            },
+            onSuccess: (mensaje) => {
+                $formCreate.reset();
+                displayAlert({
+                    type: "success",
+                    message: "Ok todo salió bien",
+                });
+                showModal = false;
+            },
+        });
     }
 
     function handleEdit(event) {
@@ -143,7 +138,7 @@
             id="a-form"
             on:submit={handleSubmit}
             action=""
-            class="w-[1200px] grid grid-cols-2 gap-x-5"
+            class="w-[1200px] grid grid-cols-2 gap-x-5 w-fit"
         >
             <div class="relative col-span-2 mx-auto">
                 {#if selectedSearch.id == 0}
@@ -168,7 +163,7 @@
                         class="fixed inset-0 bg-dark bg-opacity-20 z-40 flex justify-center items-center"
                         on:click|self={() => (showSearchedData = false)}
                     >
-                        <table class=" bg-dark relative -top-14 z-50">
+                        <table class=" bg-dark relative top-12 z-50">
                             <thead
                                 class="[&_*]:px-4 [&_*]:py-2 [&_*]:text-left"
                             >
@@ -240,7 +235,7 @@
                 {/if}
             </div>
             {#if selectedSearch.id != 0}
-                <div class="col-span-2 border rounded">
+                <div class="col-span-2 border border-color2 rounded">
                     <table class=" bg-dark z-50 [&_*]:text-sm">
                         <thead class="[&_*]:px-4 [&_*]:py-2 [&_*]:text-left">
                             <th>Cod</th>
@@ -307,8 +302,8 @@
                     bind:value={$formCreate.type_service_id}
                     error={$formCreate.errors?.type_service_id}
                 >
-                    <option value="1">Preventivo</option>
-                    <option value="2">Correctivo</option>
+                    <option value={1}>Preventivo</option>
+                    <option value={2}>Correctivo</option>
                 </Input>
 
                 <Input
@@ -343,8 +338,8 @@
                     bind:value={$formCreate.status}
                     error={$formCreate.errors?.status}
                 >
-                    <option value="1">En proceso</option>
-                    <option value="2">Completado</option>
+                    <option value={1}>En proceso</option>
+                    <option value={2}>Completado</option>
                 </Input>
 
                 {#if $formCreate.status == 2}
@@ -390,15 +385,36 @@
             id="a-form"
             on:submit={handleEdit}
             action=""
-            class="w-[500px] grid grid-cols-2 gap-x-5"
+            class="w-fit grid grid-cols-2 gap-x-5"
         >
-            <Input
-                type="text"
-                required={true}
-                label={"Maquina"}
-                bind:value={$formEdit.machine_id}
-                error={$formEdit.errors?.machine_id}
-            />
+            <div class="col-span-2 border border-color2 rounded">
+                <table class=" bg-dark z-50 [&_*]:text-sm">
+                    <thead class="[&_*]:px-4 [&_*]:py-2 [&_*]:text-left">
+                        <th>Cod</th>
+                        <th>Maquina</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th class="min-w-[190px]">Dirección/Oficina</th>
+                    </thead>
+                    <tbody>
+
+                        <tr
+                            class={`[&_*]:px-4 [&_*]:py-2  z-50 hover:bg-gray-700  bg-gray-900  brightness-110" : ""}`}
+                        >
+                            <td>{$formEdit.machine_code}</td>
+                            <td>{$formEdit.machine_name}</td>
+                            <td>{$formEdit.machine_brand}</td>
+
+                            <td>{$formEdit.machine_model}</td>
+
+                            <td class="min-w-[100px]"
+                                >{$formEdit.machine_office_name}</td
+                            >
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
             <Input
                 type="select"
                 required={true}
@@ -406,19 +422,10 @@
                 bind:value={$formEdit.type_service_id}
                 error={$formEdit.errors?.type_service_id}
             >
-                <option value="1">Preventivo</option>
-                <option value="2">Correctivo</option>
+                <option value={1}>Preventivo</option>
+                <option value={2}>Correctivo</option>
             </Input>
-            <Input
-                type="select"
-                required={true}
-                label={"Estado"}
-                bind:value={$formEdit.status}
-                error={$formEdit.errors?.status}
-            >
-                <option value="1">En proceso</option>
-                <option value="2">Completado</option>
-            </Input>
+
             <Input
                 type="select"
                 required={true}
@@ -444,26 +451,32 @@
                 bind:value={$formEdit.description}
                 error={$formEdit.errors?.description}
             />
+            <Input
+                type="select"
+                required={true}
+                label={"Estado"}
+                bind:value={$formEdit.status}
+                error={$formEdit.errors?.status}
+            >
+                <option value={1}>En proceso</option>
+                <option value={2}>Completado</option>
+            </Input>
 
-            <Input
-                type="text"
-                label={"Duración en hr"}
-                bind:value={$formEdit.duration}
-                error={$formEdit.errors?.duration}
-            />
-            <Input
-                type="date"
-                label={"Fecha de entrega"}
-                bind:value={$formEdit.end}
-                error={$formEdit.errors?.end}
-            />
-
-            <Input
-                type="date"
-                label={"Notificar prox mantenimiento el"}
-                bind:value={$formEdit.next_service_date}
-                error={$formEdit.errors?.next_service_date}
-            />
+            {#if $formEdit.status == 2}
+                <Input
+                    type="text"
+                    required={true}
+                    label={"Duración en hr"}
+                    bind:value={$formEdit.duration}
+                    error={$formEdit.errors?.duration}
+                />
+                <Input
+                    type="date"
+                    label={"Fecha de entrega"}
+                    bind:value={$formEdit.end}
+                    error={$formEdit.errors?.end}
+                />
+            {/if}
         </form>
         <input
             form="a-form"
@@ -521,6 +534,7 @@
                             status: true,
                             ...row,
                         };
+                        console.log(row)
                         $formEdit.defaults({
                             ...row,
                         });
@@ -544,8 +558,9 @@
                     {row.machine_model}
                     {row.machine_code}</td
                 >
-                <td>{row.type_service_id}</td>
-                <td>{row.status}</td>
+                <td>{row.type_service_id == 1 ? "Preventivo" : "Correctivo"}</td
+                >
+                <td>{row.status == 1 ? "En proceso" : "Completado"}</td>
 
                 <td>{row.user_name}</td>
                 <td>{row.start}</td>

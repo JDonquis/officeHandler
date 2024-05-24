@@ -80,6 +80,11 @@
                 ),
                     (selectedRow = { status: false, id: 0 });
             },
+            onError: (errors) => {
+                if (errors.data) {
+                    displayAlert({ type: "error", message: errors.data });
+                }
+            },
         });
     }
     export let data = [];
@@ -383,6 +388,14 @@
         handleDelete(selectedRow.id);
     }}
 >
+    <div slot="selectedButtons">
+        <button
+            class="bg-color4 bg-opacity-10 hover:bg-opacity-20 cursor-pointer text-2xl rounded border border-color4 px-4 py-1"
+            title="Mantenimiento"
+        >
+            <iconify-icon icon="vaadin:tools"  class="relative -bottom-1"></iconify-icon>
+        </button>
+    </div>
     <thead slot="thead" class="sticky top-0 z-50">
         <tr>
             <th>Cod</th>

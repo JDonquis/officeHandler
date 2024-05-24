@@ -15,6 +15,10 @@
         serial_number: "",
         photo: "",
         observation: "",
+        location_id: "",
+        office_id: "",
+        division_id: "",
+        department_id: "",
     };
 
     let formCreate = useForm({
@@ -74,9 +78,8 @@
                 confirm(
                     `¿Está seguro de eliminar la maquina ${selectedRow.name} ${selectedRow.model}?`,
                 ),
-                selectedRow = { status: false, id: 0 }
-
-            }
+                    (selectedRow = { status: false, id: 0 });
+            },
         });
     }
     export let data = [];
@@ -141,6 +144,56 @@
                 bind:value={$formCreate.serial_number}
                 error={$formCreate.errors?.serial_number}
             />
+            <Input
+                type="select"
+                required={true}
+                label={"Ubicación SSF"}
+                bind:value={$formCreate.location_id}
+                error={$formCreate.errors?.location_id}
+            >
+                {#each data.locations as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
+            </Input>
+
+            <Input
+                type="select"
+                required={true}
+                label={"Dirección/Oficina"}
+                bind:value={$formCreate.office_id}
+                error={$formCreate.errors?.office_id}
+            >
+                {#each data.offices as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
+            </Input>
+
+            <Input
+                type="select"
+                required={true}
+                label={"División"}
+                bind:value={$formCreate.division_id}
+                error={$formCreate.errors?.division_id}
+            >
+                {#each data.divisions as option}
+                    {#if option.office_id == $formCreate.office_id || option.id == 1}
+                        <option value={option.id}>{option.name}</option>
+                    {/if}
+                {/each}
+            </Input>
+            <Input
+                type="select"
+                required={true}
+                label={"Departamento"}
+                bind:value={$formCreate.department_id}
+                error={$formCreate.errors?.department_id}
+            >
+                {#each data.departments as option}
+                    {#if (option.division_id == $formCreate.division_id && option.division.office_id == $formCreate.office_id) || option.id == 1}
+                        <option value={option.id}>{option.name}</option>
+                    {/if}
+                {/each}
+            </Input>
 
             <!-- <Input
                 type="file"
@@ -236,7 +289,56 @@
         bind:value={$formEdit.photo}
         error={$formEdit.errors?.photo}
     /> -->
+            <Input
+                type="select"
+                required={true}
+                label={"Ubicación SSF"}
+                bind:value={$formEdit.location_id}
+                error={$formEdit.errors?.location_id}
+            >
+                {#each data.locations as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
+            </Input>
 
+            <Input
+                type="select"
+                required={true}
+                label={"Dirección/Oficina"}
+                bind:value={$formEdit.office_id}
+                error={$formEdit.errors?.office_id}
+            >
+                {#each data.offices as option}
+                    <option value={option.id}>{option.name}</option>
+                {/each}
+            </Input>
+
+            <Input
+                type="select"
+                required={true}
+                label={"División"}
+                bind:value={$formEdit.division_id}
+                error={$formEdit.errors?.division_id}
+            >
+                {#each data.divisions as option}
+                    {#if option.office_id == $formEdit.office_id || option.id == 1}
+                        <option value={option.id}>{option.name}</option>
+                    {/if}
+                {/each}
+            </Input>
+            <Input
+                type="select"
+                required={true}
+                label={"Departamento"}
+                bind:value={$formEdit.department_id}
+                error={$formEdit.errors?.department_id}
+            >
+                {#each data.departments as option}
+                    {#if (option.division_id == $formEdit.division_id && option.division.office_id == $formEdit.office_id) || option.id == 1}
+                        <option value={option.id}>{option.name}</option>
+                    {/if}
+                {/each}
+            </Input>
             <Input
                 type="textarea"
                 name=""
@@ -291,6 +393,8 @@
             <th>Cód_Serie</th>
             <th>Foto</th>
             <th>Observación</th>
+            <th>Ubicación SSF</th>
+            <th>Dirección/Oficina </th>
         </tr>
     </thead>
     <tbody slot="tbody">
@@ -301,7 +405,7 @@
                     if (row.id != selectedRow.id) {
                         selectedRow = {
                             status: true,
-                            ...row
+                            ...row,
                         };
                         $formEdit.defaults({
                             ...row,
@@ -328,8 +432,16 @@
                 <td>{row.manufacturer}</td>
 
                 <td>{row.serial_number}</td>
-                <td> <img class="max-w-[150px]" src="http://127.0.0.1:8000/storage/{row.photo}" alt="" /></td>
+                <td>
+                    <img
+                        class="max-w-[150px]"
+                        src="http://127.0.0.1:8000/storage/{row.photo}"
+                        alt=""
+                    /></td
+                >
                 <td>{row.observation}</td>
+                <td>{row.location_name}</td>
+                <td>{row.office_name}</td>
             </tr>
         {/each}
     </tbody>

@@ -116,12 +116,12 @@ h1 {
 }
 
 .table thead {
-    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+    background-color: rgb(31 41 55);
 }
 
 .table tbody {
-    background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-    border-color: rgb(55 65 81 / var(--tw-divide-opacity));
+    background-color: rgb(17 24 39);
+    border-color: rgb(55 65 81);
 
 }
 

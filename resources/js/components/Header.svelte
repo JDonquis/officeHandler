@@ -1,7 +1,7 @@
 <script>
 	// import { authHandlers } from "../../stores/authStore";
     import { inertia, page } from '@inertiajs/svelte'
-
+    import clickOutside from "./ClickOutside"
     console.log($page.props.auth)
     console.log($page)
     $: userNav = false
@@ -11,25 +11,7 @@
         console.log(userNav)
     }
 
-    function clickOutside(element, callbackFunction) {
-        // console.log('click')
-		function onClick(event) {
-			if (!element.contains(event.target)) {
-				callbackFunction();
-			}
-		}
-		
-		document.body.addEventListener('click', onClick);
-		
-		return {
-			update(newCallbackFunction) {
-				callbackFunction = newCallbackFunction;
-			},
-			destroy() {
-				document.body.removeEventListener('click', onClick);
-			}
-		}
-	}
+    
 
 </script>
 <header

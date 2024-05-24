@@ -5,25 +5,40 @@
     import Alert from "../../components/Alert.svelte";
     import { displayAlert } from "../../stores/alertStore";
     import { useForm, router } from "@inertiajs/svelte";
-    import Maquinas from "./Maquinas.svelte";
+    import clickOutside from "../../components/ClickOutside";
     let searchMachineText = "";
     $: searchMachineText, handleSearch();
 
+    let searchedData = [];
+    let selectedSearch = { row: 0, id: 0 };
+    let showSearchedData = false;
+
+    $: console.log(searchedData);
+
     async function handleSearch(data) {
-        try {
+        if (searchMachineText.length > 0) {
+            console.log({ searchMachineText });
+            showSearchedData = true;
+            try {
+                const response = await fetch(
+                    `/dashboard/maquinas/search?search=${searchMachineText}`,
+                    {
+                        method: "GET", // or 'PUT'
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    },
+                );
 
-            const response = await fetch(`/dashboard/maquinas/search?search=${searchMachineText}`, {
-                method: "GET", // or 'PUT'
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            console.log("Success:", result);
-        } catch (error) {
-            console.error("Error:", error);
+                const result = await response.json();
+                searchedData = result.machines;
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        } else {
+            showSearchedData = false;
         }
     }
 
@@ -38,7 +53,7 @@
         end: "",
         next_service_date: "",
     };
-
+    $: console.log($formCreate);
     let formCreate = useForm({
         ...emptyDataForm,
     });
@@ -54,22 +69,29 @@
     function handleSubmit(event) {
         event.preventDefault();
         $formCreate.clearErrors();
-        $formCreate.post("/dashboard/mantenimiento", {
-            onError: (errors) => {
-                if (errors.data) {
-                    displayAlert({ type: "error", message: errors.data });
-                }
-            },
-            onSuccess: (mensaje) => {
-                $formCreate.reset();
-                displayAlert({
-                    type: "success",
-                    message: "Ok todo salió bien",
-                });
-                showModal = false;
-            },
-        });
+
+        $formCreate
+            .transform((data) => ({
+                ...data,
+                machine_id: selectedRow.id
+            }))
+            .post("/dashboard/mantenimiento", {
+                onError: (errors) => {
+                    if (errors.data) {
+                        displayAlert({ type: "error", message: errors.data });
+                    }
+                },
+                onSuccess: (mensaje) => {
+                    $formCreate.reset();
+                    displayAlert({
+                        type: "success",
+                        message: "Ok todo salió bien",
+                    });
+                    showModal = false;
+                },
+            });
     }
+
     function handleEdit(event) {
         event.preventDefault();
         $formEdit.clearErrors();
@@ -90,6 +112,7 @@
             },
         });
     }
+
     function handleDelete(id) {
         $formCreate.delete(`/dashboard/mantenimiento/${id}`, {
             onBefore: () => {
@@ -100,8 +123,10 @@
             },
         });
     }
+
     export let data = [];
     console.log(data);
+
     function fillFormToEdit() {
         $formEdit.reset();
         showModalFormEdit = true;
@@ -118,83 +143,233 @@
             id="a-form"
             on:submit={handleSubmit}
             action=""
-            class="w-[500px] grid grid-cols-2 gap-x-5"
+            class="w-[1200px] grid grid-cols-2 gap-x-5"
         >
-            <Input
-                type="text"
-                required={true}
-                label={"Maquina"}
-                bind:value={searchMachineText}
-            />
-            <Input
-                type="select"
-                required={true}
-                label={"Tipo de mantenimiento"}
-                bind:value={$formCreate.type_service_id}
-                error={$formCreate.errors?.type_service_id}
-            >
-                <option value="1">Preventivo</option>
-                <option value="2">Correctivo</option>
-            </Input>
+            <div class="relative col-span-2 mx-auto">
+                {#if selectedSearch.id == 0}
+                    <input
+                        type="search"
+                        required={true}
+                        label={"Maquina"}
+                        placeholder="Buscar maquina"
+                        class={"z-50 mx-auto p-2 mt-6 bg-dark"}
+                        bind:value={searchMachineText}
+                        on:focus={(e) => {
+                            if (e.target.value.length > 0) {
+                                showSearchedData = true;
+                            }
+                        }}
+                    />
+                {/if}
 
-            <Input
-                type="select"
-                required={true}
-                label={"Responsable"}
-                bind:value={$formCreate.user_id}
-                error={$formCreate.errors?.user_id}
-            >
-                {#each data?.users as option}
-                    <option value={option.id}>{option.name}</option>
-                {/each}
-            </Input>
-            <Input
-                type="date"
-                label={"Fecha de inicio"}
-                bind:value={$formCreate.start}
-                error={$formCreate.errors?.start}
-            />
-            <Input
-                type="textarea"
-                name=""
-                id=""
-                label={"Descripción"}
-                bind:value={$formCreate.description}
-                error={$formCreate.errors?.description}
-            />
-            <Input
-                type="select"
-                required={true}
-                label={"Estado"}
-                bind:value={$formCreate.status}
-                error={$formCreate.errors?.status}
-            >
-                <option value="1">En proceso</option>
-                <option value="2">Completado</option>
-            </Input>
+                {#if showSearchedData}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <div
+                        class="fixed inset-0 bg-dark bg-opacity-20 z-40 flex justify-center items-center"
+                        on:click|self={() => (showSearchedData = false)}
+                    >
+                        <table class=" bg-dark relative -top-14 z-50">
+                            <thead
+                                class="[&_*]:px-4 [&_*]:py-2 [&_*]:text-left"
+                            >
+                                <th>Cod</th>
+                                <th>Maquina</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Fabricante</th>
+                                <th>Cód_Serie</th>
+                                <th>Foto</th>
+                                <th>Observación</th>
+                                <th class="min-w-[190px]">Ubicación SSF</th>
+                                <th class="min-w-[190px]"
+                                    >Dirección/Oficina
+                                </th>
+                            </thead>
+                            <tbody>
+                                {#each searchedData as row}
+                                    <tr
+                                        on:click={(e) => {
+                                            if (row.id != selectedSearch.id) {
+                                                selectedSearch = { ...row };
+                                            }
+                                            selectedSearch = { ...row };
+                                            showSearchedData = false;
+                                        }}
+                                        class={`[&_*]:px-4 [&_*]:py-2 cursor-pointer bg-gray-800 z-50 hover:bg-gray-700  ${selectedRow.id == row.id ? "bg-gray-800  brightness-110" : ""}`}
+                                    >
+                                        <td>{row.code}</td>
+                                        <td>{row.name}</td>
+                                        <td>{row.brand}</td>
 
-            {#if $formCreate.status == 2}
+                                        <td>{row.model}</td>
+                                        <td>{row.manufacturer}</td>
+
+                                        <td>{row.serial_number}</td>
+                                        <td>
+                                            <img
+                                                class="max-w-[150px]"
+                                                src="http://127.0.0.1:8000/storage/{row.photo}"
+                                                alt=""
+                                            /></td
+                                        >
+                                        <td class="min-w-[100px]"
+                                            >{row.observation}</td
+                                        >
+                                        <td class="min-w-[100px]"
+                                            >{row.location_name}</td
+                                        >
+                                        <td class="min-w-[100px]"
+                                            >{row.office_name}</td
+                                        >
+                                    </tr>
+                                {/each}
+                                {#if searchedData.length < 1}
+                                    <tr>
+                                        <td
+                                            colSpan={10}
+                                            class="text-center p-3"
+                                        >
+                                            No se encontraron maquinas con su
+                                            busqueda</td
+                                        >
+                                    </tr>
+                                {/if}
+                            </tbody>
+                        </table>
+                    </div>
+                {/if}
+            </div>
+            {#if selectedSearch.id != 0}
+                <div class="col-span-2 border rounded">
+                    <table class=" bg-dark z-50 [&_*]:text-sm">
+                        <thead class="[&_*]:px-4 [&_*]:py-2 [&_*]:text-left">
+                            <th>Cod</th>
+                            <th>Maquina</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Fabricante</th>
+                            <th>Cód_Serie</th>
+                            <th>Foto</th>
+                            <th>Observación</th>
+                            <th class="min-w-[190px]">Ubicación SSF</th>
+                            <th class="min-w-[190px]">Dirección/Oficina </th>
+                            <th>Quitar</th>
+                        </thead>
+                        <tbody>
+                            {#each searchedData as row}
+                                <tr
+                                    class={`[&_*]:px-4 [&_*]:py-2 cursor-pointer  z-50 hover:bg-gray-700  bg-gray-900  brightness-110" : ""}`}
+                                >
+                                    <td>{row.code}</td>
+                                    <td>{row.name}</td>
+                                    <td>{row.brand}</td>
+
+                                    <td>{row.model}</td>
+                                    <td>{row.manufacturer}</td>
+
+                                    <td>{row.serial_number}</td>
+                                    <td>
+                                        <img
+                                            class="max-w-[150px]"
+                                            src="http://127.0.0.1:8000/storage/{row.photo}"
+                                            alt=""
+                                        /></td
+                                    >
+                                    <td class="min-w-[100px]"
+                                        >{row.observation}</td
+                                    >
+                                    <td class="min-w-[100px]"
+                                        >{row.location_name}</td
+                                    >
+                                    <td class="min-w-[100px]"
+                                        >{row.office_name}</td
+                                    >
+                                    <td>
+                                        <button
+                                            class="h-full w-full cursor-pointer hover:bg-red"
+                                            title="Quitar"
+                                            on:click={() =>
+                                                (selectedSearch = { id: 0 })}
+                                        >
+                                            <iconify-icon icon="mynaui:delete"
+                                            ></iconify-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
                 <Input
-                    type="text"
+                    type="select"
                     required={true}
-                    label={"Duración en hr"}
-                    bind:value={$formCreate.duration}
-                    error={$formCreate.errors?.duration}
-                />
+                    label={"Tipo de mantenimiento"}
+                    bind:value={$formCreate.type_service_id}
+                    error={$formCreate.errors?.type_service_id}
+                >
+                    <option value="1">Preventivo</option>
+                    <option value="2">Correctivo</option>
+                </Input>
+
+                <Input
+                    type="select"
+                    required={true}
+                    label={"Responsable"}
+                    bind:value={$formCreate.user_id}
+                    error={$formCreate.errors?.user_id}
+                >
+                    {#each data?.users as option}
+                        <option value={option.id}>{option.name}</option>
+                    {/each}
+                </Input>
                 <Input
                     type="date"
-                    label={"Fecha de entrega"}
-                    bind:value={$formCreate.end}
-                    error={$formCreate.errors?.end}
+                    label={"Fecha de inicio"}
+                    bind:value={$formCreate.start}
+                    error={$formCreate.errors?.start}
+                />
+                <Input
+                    type="textarea"
+                    name=""
+                    id=""
+                    label={"Descripción"}
+                    bind:value={$formCreate.description}
+                    error={$formCreate.errors?.description}
+                />
+                <Input
+                    type="select"
+                    required={true}
+                    label={"Estado"}
+                    bind:value={$formCreate.status}
+                    error={$formCreate.errors?.status}
+                >
+                    <option value="1">En proceso</option>
+                    <option value="2">Completado</option>
+                </Input>
+
+                {#if $formCreate.status == 2}
+                    <Input
+                        type="text"
+                        required={true}
+                        label={"Duración en hr"}
+                        bind:value={$formCreate.duration}
+                        error={$formCreate.errors?.duration}
+                    />
+                    <Input
+                        type="date"
+                        label={"Fecha de entrega"}
+                        bind:value={$formCreate.end}
+                        error={$formCreate.errors?.end}
+                    />
+                {/if}
+
+                <Input
+                    type="date"
+                    label={"Notificar prox mantenimiento el"}
+                    bind:value={$formCreate.next_service_date}
+                    error={$formCreate.errors?.next_service_date}
                 />
             {/if}
-
-            <Input
-                type="date"
-                label={"Notificar prox mantenimiento el"}
-                bind:value={$formCreate.next_service_date}
-                error={$formCreate.errors?.next_service_date}
-            />
         </form>
         <input
             form="a-form"

@@ -21,7 +21,7 @@
 <section class="bg-white min-h-screen  dashboard_container" class:menuStatus-false={$navStatus.isContracted}>
     <Header />
 
-    <div class=" main_and_footer_container  border-l dark:border-gray-700" bing:this="main_and_footer_container">
+    <div class=" main_and_footer_container  border-l border-gray-700" bing:this="main_and_footer_container">
         <main  style={mainWidth}  class={`mx-auto main_dashboard   relative px-10 duration-100 pb-10`} >
             <slot />
         </main>

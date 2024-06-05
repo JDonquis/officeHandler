@@ -132,7 +132,7 @@
 
 {#if showModal}
     <Modal bind:showModal>
-        <h2 slot="header" class="text-sm text-center">CREAR MAQUINA</h2>
+        <h2 slot="header" class="text-sm text-center">REGISTRAR MANTENIMIENTO</h2>
 
         <form
             id="a-form"
